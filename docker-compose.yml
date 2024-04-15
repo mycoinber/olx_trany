@@ -1,0 +1,82 @@
+version: "3.3"
+
+services:
+  tomo_back:
+    container_name: tomo_back
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - tomo_net
+    depends_on:
+      - tomo_mongo
+    env_file:
+      - .env
+    restart: always
+    environment:
+      MONGODB_URI: "mongodb://${DB_UNAME}:${DB_PWD}@tomo_mongo:27017/${DB_NAME}"
+    volumes:
+      - ./backend:/usr/src/app
+    command: ["node", "app.js"]
+
+  tomo_bot:
+    container_name: tomo_bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${BOT_PORT}:${BOT_PORT}
+    networks:
+      - tomo_net
+    depends_on:
+      - tomo_mongo
+    env_file:
+      - .env
+    restart: always
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_BOT_MODE: "polling" # Используйте "polling" для режима поллинга
+      TELEGRAM_WEBHOOK_PATH: "/telegram-webhook-path" # Замените на ваш путь
+      TELEGRAM_WEBHOOK_DOMAIN: "bot.tomobot.online"
+      FOODO_SERVICE_PORT: ${PORT}
+    volumes:
+      - ./bot:/usr/src/app
+    command: ["node", "app.js"]
+
+  tomo_mongo:
+    image: mongo:latest
+    container_name: tomo_mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_UNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PWD}
+
+    ports:
+      - 27018:27017
+    networks:
+      - tomo_net
+    volumes:
+      - ./mongodb_data:/data/db
+
+  tomo_client:
+    container_name: tomo_vue_client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.client
+    ports:
+      - ${CLIENT_PORT}:5173
+    networks:
+      - tomo_net
+    restart: always
+    volumes:
+      - ./client:/usr/src/app
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+volumes:
+  tomocoin:
+  mongodb_data:
+
+networks:
+  tomo_net:
+    driver: bridge

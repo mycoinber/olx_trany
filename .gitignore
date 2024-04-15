@@ -1,0 +1,8 @@
+/node_modules
+/mongodb_data
+backend/uploads/*
+.env
+docker-compose copy.yml
+docker-compose-db.yml
+nginx_init.conf
+nginx_init_prod.conf
