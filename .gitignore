@@ -6,3 +6,4 @@ docker-compose copy.yml
 docker-compose-db.yml
 nginx_init.conf
 nginx_init_prod.conf
+package-lock.json
