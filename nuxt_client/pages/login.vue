@@ -1,16 +1,21 @@
 <script lang="ts" setup>
-console.log("login loaded");
+const router = useRouter();
+// console.log("login loaded");
 useSeoMeta({
   title: "Login",
 });
+const user = ref({
+  username: "",
+  password: "",
+});
 const authStore = useAuthStore();
-console.log(authStore.getIsAuthenticated);
-const usernameRef = ref("");
-const passwordRef = ref("");
+// console.log(authStore.getIsAuthenticated);
 
 const handleLogin = () => {
-
-  authStore.login({ username: usernameRef.value, password: passwordRef.value });
+  authStore.login({
+    username: user.value.username,
+    password: user.value.password,
+  });
 };
 
 const handleRegister = () => {
@@ -26,19 +31,19 @@ const handleRegister = () => {
       <form action="" @submit.prevent="handleLogin">
         <input
           type="text"
-          v-model="usernameRef"
+          v-model="user.username"
           placeholder="Username"
           required
         />
         <input
           type="password"
-          v-model="passwordRef"
+          v-model="user.password"
           placeholder="Password"
           required
         />
         <div class="button__group">
-          <button type="submit" @click="handleLogin">Login</button>
-          <button type="submit">Register</button>
+          <button type="submit">Login</button>
+          <button @click="router.push('/registration')">Register</button>
         </div>
       </form>
     </div>

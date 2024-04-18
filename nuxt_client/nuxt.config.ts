@@ -12,7 +12,13 @@ export default defineNuxtConfig({
         },
       },
     },
+    server: {
+      watch: {
+        usePolling: true,
+      },
+    },
   },
+
   googleFonts: {
     families: {
       Montserrat: {
@@ -23,4 +29,5 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ["./store/**"],
   },
+  
 });

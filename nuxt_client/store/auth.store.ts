@@ -23,12 +23,40 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async login(username: string, password: string) {
       try {
+        console.log(username, password);
         // Отправляем запрос на сервер для авторизации
         const response = await instance.post("/login", {
           username,
           password,
         });
-
+        console.log(response);
+        // Если авторизация прошла успешно, сохраняем пользователя в состоянии
+        if (response.data.success) {
+          this.user = response.data.user;
+          this.isAuthenticated = true;
+          console.log('Login successful');
+        } else {
+          // Обрабатываем ошибку авторизации
+          console.error("Ошибка авторизации:", response.data.message);
+        }
+      } catch (error) {
+        // Обрабатываем ошибку сети
+        console.error("Ошибка сети:", error);
+      }
+    },
+    async register(username: string, password: string, firstName: string, lastName: string, email: string, phone: string) {
+      try {
+        console.log(username, password, firstName, lastName, email, phone);
+        // Отправляем запрос на сервер для авторизации
+        const response = await instance.post("/register", {
+          username,
+          password,
+          firstName,
+          lastName,
+          email,
+          phone,
+        });
+        console.log(response);
         // Если авторизация прошла успешно, сохраняем пользователя в состоянии
         if (response.data.success) {
           this.user = response.data.user;

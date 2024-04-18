@@ -5,35 +5,69 @@ useSeoMeta({
 });
 const authStore = useAuthStore();
 console.log(authStore.getIsAuthenticated);
-const usernameRef = ref("");
-const passwordRef = ref("");
 
-
+const user = ref({
+  username: "",
+  password: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+});
 
 const handleRegister = () => {
-  // Ваша логика для обработки нажатия кнопки "Register"
+  authStore.register({
+    username: user.value.username,
+    password: user.value.password,
+    firstName: user.value.firstName,
+    lastName: user.value.lastName,
+    email: user.value.email,
+    phone: user.value.phone,
+  });
 };
 </script>
 
 <template>
   <div class="auth auth-register">
     <div class="auth__form">
-    <h1 class="auth__title">Register</h1>
+      <h1 class="auth__title">Register</h1>
 
-    <form action="" @submit.prevent="handleLogin">
-      <input type="text" v-model="usernameRef" placeholder="Username" required />
-      <input type="password" v-model="passwordRef" placeholder="Password" required />
-      <input type="text" placeholder="First Name" required />
-      <input type="text" placeholder="Last Name" required />
-      <input type="email" placeholder=" Email" required />
-      <input type="tel" placeholder="Phone" required />
-      <button type="submit">Register</button>
-    </form>
+      <form action="" @submit.prevent="handleRegister">
+        <input
+          type="text"
+          v-model="user.username"
+          placeholder="Username"
+          required
+        />
+        <input
+          type="password"
+          v-model="user.password"
+          placeholder="Password"
+          required
+        />
+        <input
+          type="text"
+          v-model="user.firstName"
+          placeholder="First Name"
+          required
+        />
+        <input
+          type="text"
+          v-model="user.lastName"
+          placeholder="Last Name"
+          required
+        />
+        <input
+          type="email"
+          v-model="user.email"
+          placeholder=" Email"
+          required
+        />
+        <input type="tel" v-model="user.phone" placeholder="Phone" required />
+        <button type="submit">Register</button>
+      </form>
+    </div>
   </div>
-</div>
 </template>
 
-<style  scoped >
-</style>
-
-
+<style scoped></style>
