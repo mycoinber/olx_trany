@@ -20,6 +20,19 @@ services:
     volumes:
       - ./backend:/usr/src/app
     command: ["node", "app.js"]
+  nuxt_client:
+    container_name: nuxt_client
+    build:
+      context: ./nuxt_client
+      dockerfile: Dockerfile.client
+    ports:
+      - ${NUXT_PORT}:3000
+    networks:
+      - olx_net
+    restart: always
+    volumes:
+      - ./nuxt_client:/usr/src/app
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
 
   olx_mongo:
     image: mongo:latest
