@@ -22,7 +22,14 @@ const createUser = async (req, res) => {
         email,
         password,
         fullName,
-        age
+        age,
+        phone,
+        descr,
+        firstName,
+        lastName,
+        role,
+        logo,
+        subscription
     } = req.body;
 
     try {
@@ -46,7 +53,14 @@ const createUser = async (req, res) => {
             email,
             password,
             fullName,
-            age
+            age,
+            descr,
+            phone,
+            firstName,
+            lastName,
+            role,
+            logo,
+            subscription
         });
         await newUser.save();
 
@@ -68,7 +82,14 @@ const registerUser = async (req, res) => {
         email,
         password,
         fullName,
-        age
+        age,
+        phone,
+        descr,
+        firstName,
+        lastName,
+        role,
+        logo,
+        subscription
     } = req.body;
 
     try {
@@ -96,7 +117,14 @@ const registerUser = async (req, res) => {
             email,
             password: hashedPassword,
             fullName,
-            age
+            age,
+            phone,
+            descr,
+            firstName,
+            lastName,
+            role,
+            logo,
+            subscription
         });
         await newUser.save();
 
@@ -252,5 +280,6 @@ module.exports = {
     getUserById,
     updateUser,
     updateUserPwd,
-    deleteUser
+    deleteUser,
+
 };

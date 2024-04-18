@@ -10,6 +10,8 @@ router.get('/:userId', UserController.getUserById);
 
 // Создание нового пользователя
 router.post('/', UserController.createUser);
+
+// Регистрация
 router.post('/register', UserController.registerUser);
 
 // // Обновление информации о пользователе по ID

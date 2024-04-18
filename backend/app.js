@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
 const front = process.env.FRONT;
 const allowedOrigins = [front];
 const dbuser = process.env.DB_UNAME;
@@ -52,8 +53,10 @@ setTimeout(() => {
 }, 10000);
 
 app.use(express.json());
+
 //Роуты
 app.use("/user", userRoutes);
+app.use("/category", categoryRoutes);
 
 //прослушка приложения
 app.listen(port, () => {
