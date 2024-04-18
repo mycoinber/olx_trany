@@ -1,7 +1,8 @@
 <script lang="ts" setup>
   console.log("test");
   useSeoMeta({
-    title: "Login",
+    title: "Login 1",
+    description: "some dessc",
   });
   const authStore = useAuthStore();
   console.log(authStore.getIsAuthenticated);
