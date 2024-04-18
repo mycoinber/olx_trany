@@ -1,27 +1,29 @@
 <script lang="ts" setup>
-useSeoMeta({
-  title: "Login",
-});
+  console.log("test");
+  useSeoMeta({
+    title: "Login",
+  });
+  const authStore = useAuthStore();
+  console.log(authStore.getIsAuthenticated);
+  const usernameRef = ref("");
+  const passwordRef = ref("");
 
-const usernameRef = ref("");
-const passwordRef = ref("");
+  // const isLoadingStore = userIsLoadingStore();
+  // const authStore = userAuthStore();
+  // const router = useRouter;
 
-// const isLoadingStore = userIsLoadingStore();
-// const authStore = userAuthStore();
-// const router = useRouter;
-
-// const login = async() => {
-//   isLoadingStore.set(true);
-//   await account.createPhoneSession(usernameRef.value, passwordRef.value)
-//   const response = await account.get()
-//   if(response){
-//     authStore.set({
-//       phone: response.phone,
-//       name: response.name,
-//       status: response.status
-//     })
-//   }
-// }
+  // const login = async() => {
+  //   isLoadingStore.set(true);
+  //   await account.createPhoneSession(usernameRef.value, passwordRef.value)
+  //   const response = await account.get()
+  //   if(response){
+  //     authStore.set({
+  //       phone: response.phone,
+  //       name: response.name,
+  //       status: response.status
+  //     })
+  //   }
+  // }
 </script>
 
 <template>
@@ -51,7 +53,4 @@ const passwordRef = ref("");
   </div>
 </template>
 
-<style  scoped >
-</style>
-
-
+<style scoped></style>

@@ -12,6 +12,8 @@
   "dependencies": {
     "@nuxt/image": "^1.5.0",
     "@pinia/nuxt": "^0.5.1",
+    "axios": "^1.6.8",
+    "js-cookie": "^3.0.5",
     "nuxt": "^3.11.2",
     "nuxt-sass-resources-loader": "^2.0.5",
     "pinia": "^2.1.7",
