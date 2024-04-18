@@ -1,7 +1,7 @@
 # Dockerfile
 
 # Используем официальный образ Node.js
-FROM node:18.15
+FROM node:20.12.1
 
 COPY .env /usr/src/app/
 # Устанавливаем зависимости из общих файлов package*.json
