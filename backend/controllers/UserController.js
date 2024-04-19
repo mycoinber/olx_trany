@@ -21,15 +21,10 @@ const createUser = async (req, res) => {
         username,
         email,
         password,
-        fullName,
-        age,
         phone,
-        descr,
         firstName,
         lastName,
-        role,
-        logo,
-        subscription
+
     } = req.body;
 
     try {
@@ -52,15 +47,10 @@ const createUser = async (req, res) => {
             username,
             email,
             password,
-            fullName,
-            age,
-            descr,
             phone,
             firstName,
             lastName,
-            role,
-            logo,
-            subscription
+
         });
         await newUser.save();
 
@@ -77,19 +67,17 @@ const createUser = async (req, res) => {
 
 const registerUser = async (req, res) => {
     // console.log(req);
+
     const {
         username,
         email,
         password,
-        fullName,
-        age,
+
         phone,
-        descr,
+
         firstName,
         lastName,
-        role,
-        logo,
-        subscription
+
     } = req.body;
 
     try {
@@ -116,15 +104,12 @@ const registerUser = async (req, res) => {
             username,
             email,
             password: hashedPassword,
-            fullName,
-            age,
+
             phone,
-            descr,
+
             firstName,
             lastName,
-            role,
-            logo,
-            subscription
+
         });
         await newUser.save();
 
@@ -167,7 +152,15 @@ const getUserById = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const userId = req.params.userId;
-    const newUserData = req.body;
+    let newUserData = req.body;
+    let mediaPath = "";
+    if (req.file) {
+        mediaPath = req.filepath; // Путь к медиафайлу
+        newUserData = {
+            ...newUserData,
+            logo: mediaPath
+        }
+    }
     try {
         if (!req.body.password) {
             const updatedUser = await User.findByIdAndUpdate(userId, {
@@ -272,6 +265,68 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const loginUser = async (req, res) => {
+    try {
+        // Извлекаем данные из тела запроса
+        const {
+            usernameOrEmail,
+            password
+        } = req.body;
+
+        // Находим пользователя по email или username
+        const user = await User.findOne({
+            $or: [{
+                email: usernameOrEmail
+            }, {
+                username: usernameOrEmail
+            }],
+        }).populate("role");
+
+        // Если пользователь не найден, возвращаем ошибку
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+
+        // Проверяем пароль
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        // Если пароль неверный, возвращаем ошибку
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                message: "Invalid password",
+            });
+        }
+
+        // Создаем JWT токен с ролью пользователя
+        const token = jwt.sign({
+                userId: user._id,
+                role: user.role, // Добавляем роль в токен
+            },
+            process.env.JWT_SECRET, {
+                expiresIn: "12h",
+            }
+        );
+
+        // Отправляем ответ с токеном и информацией о пользователе
+        res.status(200).json({
+            message: "Login successful",
+            token,
+            user: {
+                id: user._id,
+                email: user.email,
+                role: user.role, // Включаем роль пользователя в информацию о пользователе
+            },
+        });
+    } catch (error) {
+        // Обрабатываем ошибки
+        console.error("Error logging in:", error);
+        res.status(500).json({
+            message: "An error occurred while logging in",
+        });
+    }
+};
 
 module.exports = {
     getUsers,
@@ -281,5 +336,5 @@ module.exports = {
     updateUser,
     updateUserPwd,
     deleteUser,
-
+    loginUser
 };

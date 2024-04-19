@@ -40,25 +40,21 @@ const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
-        unique: true,
+
     },
     lastName: {
         type: String,
         required: true,
-        unique: true,
+
     },
     role: {
         type: String,
         enum: ['admin', 'sadmin', 'user', 'moderator'],
         default: 'user',
     },
-    logo: {
-        type: String,
-        default: 'path/to/default/logo.png', //Указать путь
-    },
+    logo: String,
     subscription: {
         type: String,
-        default: null,
     },
 });
 
