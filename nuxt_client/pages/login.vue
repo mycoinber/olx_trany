@@ -8,23 +8,6 @@
   console.log(authStore.getIsAuthenticated);
   const usernameRef = ref("");
   const passwordRef = ref("");
-
-  // const isLoadingStore = userIsLoadingStore();
-  // const authStore = userAuthStore();
-  // const router = useRouter;
-
-  // const login = async() => {
-  //   isLoadingStore.set(true);
-  //   await account.createPhoneSession(usernameRef.value, passwordRef.value)
-  //   const response = await account.get()
-  //   if(response){
-  //     authStore.set({
-  //       phone: response.phone,
-  //       name: response.name,
-  //       status: response.status
-  //     })
-  //   }
-  // }
 </script>
 
 <template>

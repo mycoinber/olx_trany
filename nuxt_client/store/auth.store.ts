@@ -24,7 +24,7 @@ export const useAuthStore = defineStore("auth", {
     async login(username: string, password: string) {
       try {
         // Отправляем запрос на сервер для авторизации
-        const response = await instance.post("/login", {
+        const response = await instance.post("/user/login", {
           username,
           password,
         });
@@ -48,4 +48,3 @@ export const useAuthStore = defineStore("auth", {
     },
   },
 });
-aasdas;
