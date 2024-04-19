@@ -4,6 +4,11 @@ export default defineNuxtConfig({
   css: ["~/assets/scss/main.scss"],
   modules: ["@nuxt/image", "nuxt-icon", "@pinia/nuxt", "@nuxtjs/google-fonts"],
   vite: {
+    server: {
+      watch: {
+        usePolling: true,
+      },
+    },
     css: {
       preprocessorOptions: {
         scss: {

@@ -1,13 +1,20 @@
 <script lang="ts" setup>
-  console.log("test");
+  console.log("login loaded");
   useSeoMeta({
-    title: "Login 1",
-    description: "some dessc",
+    title: "Login",
   });
   const authStore = useAuthStore();
   console.log(authStore.getIsAuthenticated);
   const usernameRef = ref("");
   const passwordRef = ref("");
+
+  const handleLogin = () => {
+    authStore.login(usernameRef.value, passwordRef.value);
+  };
+
+  const handleRegister = () => {
+    // Ваша логика для обработки нажатия кнопки "Register"
+  };
 </script>
 
 <template>
@@ -15,7 +22,7 @@
     <div class="auth__form">
       <h1 class="auth__title">Login</h1>
 
-      <form action="">
+      <form action="" @submit.prevent="handleLogin">
         <input
           type="text"
           v-model="usernameRef"
@@ -29,7 +36,7 @@
           required
         />
         <div class="button__group">
-          <button type="submit">Login</button>
+          <button type="submit" @click="handleLogin">Login</button>
           <button type="submit">Register</button>
         </div>
       </form>

@@ -33,6 +33,7 @@ export const useAuthStore = defineStore("auth", {
         if (response.data.success) {
           this.user = response.data.user;
           this.isAuthenticated = true;
+          console.log("Login successful");
         } else {
           // Обрабатываем ошибку авторизации
           console.error("Ошибка авторизации:", response.data.message);
