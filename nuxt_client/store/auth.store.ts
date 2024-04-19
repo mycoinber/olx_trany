@@ -1,6 +1,6 @@
 // ~/store/auth.ts
 import { defineStore } from "pinia";
-import instance from "../plugins/axios";
+const { $axios } = useNuxtApp();
 
 interface User {
   name: string;
@@ -24,7 +24,7 @@ export const useAuthStore = defineStore("auth", {
     async login(username: string, password: string) {
       try {
         // Отправляем запрос на сервер для авторизации
-        const response = await instance.post("/user/login", {
+        const response = await $axios.post("/user/login", {
           username,
           password,
         });
