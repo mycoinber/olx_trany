@@ -17,13 +17,10 @@
 .sidebar {
   height: 100vh;
 
-  background: rgb(2, 0, 36);
-  background: linear-gradient(
-    90deg,
-    rgba(2, 0, 36, 0.7511379551820728) 0%,
-    rgba(9, 9, 121, 1) 48%,
-    rgba(0, 212, 255, 0.896796218487395) 100%
-  );
+  background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.1);
   aside {
     margin-top: 1rem;
     display: flex;
@@ -43,7 +40,7 @@
       span {
       
       font-size: 1rem;
-      color: $white;
+      color: black;
       display: block;
     }
     }
