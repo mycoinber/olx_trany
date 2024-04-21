@@ -1,14 +1,8 @@
 const mongoose = require('mongoose');
 
 const categorySchema = new mongoose.Schema({
-    id: {
-        type: Number,
-        unique: true,
-    },
     title: {
         type: String,
-        minlength: 2,
-        maxlength: 100,
     },
     description: {
         type: String,
@@ -17,10 +11,7 @@ const categorySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
     },
-    photo: {
-        type: String,
-        default: 'path/to/default/photo.png',
-    },
+    photo: String,
     slug: {
         type: String,
         unique: true,

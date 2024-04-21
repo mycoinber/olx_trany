@@ -1,4 +1,3 @@
-// ~/store/auth.ts
 import { defineStore } from "pinia";
 const { $axios } = useNuxtApp();
 
@@ -11,6 +10,7 @@ export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: null as User | null,
     isAuthenticated: false,
+    token: null as string | null, // Добавляем токен в состояние
   }),
   getters: {
     getUser(state) {
@@ -19,33 +19,65 @@ export const useAuthStore = defineStore("auth", {
     getIsAuthenticated(state) {
       return state.isAuthenticated;
     },
+    getToken(state) {
+      return state.token; // Добавляем геттер для токена
+    },
   },
   actions: {
-    async login(username: string, password: string) {
+    async register(
+      username: string,
+      email: string,
+      password: string,
+      phone: string,
+      firstName: string,
+      lastName: string
+    ) {
       try {
-        // Отправляем запрос на сервер для авторизации
-        const response = await $axios.post("/user/login", {
+        const response = await $axios.post("/user/register", {
           username,
+          email,
           password,
+          phone,
+          firstName,
+          lastName,
         });
 
-        // Если авторизация прошла успешно, сохраняем пользователя в состоянии
         if (response.data.success) {
           this.user = response.data.user;
           this.isAuthenticated = true;
+          this.token = response.data.token; // Сохраняем токен
+          console.log("Registration successful");
+          return response.data.success;
+        } else {
+          console.error("Ошибка регистрации:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Ошибка сети:", error);
+      }
+    },
+    async login(usernameOrEmail: string, password: string) {
+      try {
+        const response = await $axios.post("/user/login", {
+          usernameOrEmail,
+          password,
+        });
+
+        if (response.data.success) {
+          this.user = response.data.user;
+          this.isAuthenticated = true;
+          this.token = response.data.token; // Сохраняем токен
           console.log("Login successful");
         } else {
-          // Обрабатываем ошибку авторизации
           console.error("Ошибка авторизации:", response.data.message);
         }
       } catch (error) {
-        // Обрабатываем ошибку сети
         console.error("Ошибка сети:", error);
       }
     },
     logout() {
       this.user = null;
       this.isAuthenticated = false;
+      this.token = null; // Очищаем токен
     },
   },
 });

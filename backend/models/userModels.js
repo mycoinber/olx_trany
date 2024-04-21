@@ -40,22 +40,21 @@ const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
+    sparse: true,
   },
   lastName: {
     type: String,
     required: true,
+    sparse: true,
   },
   role: {
     type: String,
     enum: ["admin", "sadmin", "user", "moderator"],
     default: "user",
   },
-  logo: {
-    type: String,
-  },
+  logo: String,
   subscription: {
-    type: Object,
-    default: null,
+    type: String,
   },
 });
 

@@ -1,24 +1,61 @@
 const express = require("express");
 const router = express.Router();
 const CategoryController = require("../controllers/CategoryController");
+const multer = require("multer");
+const path = require("path");
 
-// // Получение всех пользователей
-// router.get('/', UserController.getUsers);
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "../uploads/")); // Укажите путь к директории для загрузки файлов
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix =
+      new Date().toISOString().replace(/:/g, "-") +
+      "-" +
+      file.originalname.replace(/\s/g, "-");
+    cb(null, uniqueSuffix);
+    req.filepath = "/uploads/" + uniqueSuffix; // Сохраняем относительный путь
+  },
+});
 
-// // Получение пользователя по ID
-// router.get('/:userId', UserController.getUserById);
+const upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else if (file.mimetype.startsWith("video/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Not an image or video file!"), false);
+    }
+  },
+  limits: {
+    fileSize: function (req, file, cb) {
+      if (file.mimetype.startsWith("image/")) {
+        return 4 * 1024 * 1024; // 4MB
+      } else if (file.mimetype.startsWith("video/")) {
+        return 200 * 1024 * 1024; // 200MB
+      }
+    },
+  },
+});
 
-// // Создание нового пользователя
-// router.post('/', UserController.createUser);
-// router.post('/register', UserController.registerUser);
+// Получение всех категорий
+// router.get('/', CategoryController.getAllCategories);
 
-// // // Обновление информации о пользователе по ID
-// router.put('/:userId', UserController.updateUser);
+// // Получение категории по ID
+// router.get('/:categoryId', CategoryController.getCategoryById);
 
-// // // Обновление информации о пользователе по ID
-// router.put('/changepassword/:userId', UserController.updateUserPwd);
+// // Получение категории по Slug
+// router.get('/:categorySlug', CategoryController.getCategoryBySlug);
 
-// // // Удаление пользователя по ID
-// router.delete('/:userId', UserController.deleteUser);
+// Создание новой категории
+router.post("/", CategoryController.createCategory);
+
+// Обновление информации о категории по ID
+// router.put('/:categoryId', upload.single("media"), CategoryController.updateCategory);
+
+// // Удаление категории по ID
+// router.delete('/:categoryId', CategoryController.deleteCategory);
 
 module.exports = router;

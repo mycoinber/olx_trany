@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const instance = axios.create({
-    baseURL: "http://localhost:3000", // Укажите ваш базовый URL здесь
+    baseURL: "http://localhost:3001", // Укажите ваш базовый URL здесь
   });
 
   // Добавляем Axios Interceptor для запросов
