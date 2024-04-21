@@ -57,7 +57,7 @@ app.use(express.json());
 
 //Роуты
 app.use("/user", userRoutes);
-// app.use("/category", categoryRoutes);
+app.use("/category", categoryRoutes);
 
 //прослушка приложения
 app.listen(port, () => {

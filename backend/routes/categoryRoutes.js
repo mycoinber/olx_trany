@@ -41,21 +41,25 @@ const upload = multer({
 });
 
 // Получение всех категорий
-// router.get('/', CategoryController.getAllCategories);
+router.get("/", CategoryController.getAllCategories);
 
-// // Получение категории по ID
-// router.get('/:categoryId', CategoryController.getCategoryById);
+// Получение категории по ID
+router.get("/:categoryId", CategoryController.getCategoryById);
 
-// // Получение категории по Slug
-// router.get('/:categorySlug', CategoryController.getCategoryBySlug);
+// Получение категории по Slug
+router.get("/:categorySlug", CategoryController.getCategoryBySlug);
 
 // Создание новой категории
 router.post("/", CategoryController.createCategory);
 
 // Обновление информации о категории по ID
-// router.put('/:categoryId', upload.single("media"), CategoryController.updateCategory);
+router.put(
+  "/:categoryId",
+  upload.single("media"),
+  CategoryController.updateCategory
+);
 
-// // Удаление категории по ID
-// router.delete('/:categoryId', CategoryController.deleteCategory);
+// Удаление категории по ID
+router.delete("/:categoryId", CategoryController.deleteCategory);
 
 module.exports = router;
