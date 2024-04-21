@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 async function getUsers(req, res) {
     console.log("test");
     res.status(200).json({
+        success: true,
         user: "users",
     });
 }
@@ -56,6 +57,7 @@ const createUser = async (req, res) => {
 
         res.status(201).json({
             message: 'Пользователь успешно создан',
+            success: true,
             user: newUser
         });
     } catch (error) {
@@ -72,9 +74,7 @@ const registerUser = async (req, res) => {
         username,
         email,
         password,
-
         phone,
-
         firstName,
         lastName,
 
@@ -115,6 +115,7 @@ const registerUser = async (req, res) => {
 
         res.status(201).json({
             message: 'Пользователь успешно создан',
+            success: true,
             user: newUser
         });
     } catch (error) {
@@ -140,6 +141,7 @@ const getUserById = async (req, res) => {
 
         res.status(200).json({
             message: 'Данные пользователя успешно получены',
+            success: true,
             user: user
         });
     } catch (error) {
@@ -175,6 +177,7 @@ const updateUser = async (req, res) => {
             }
             res.status(200).json({
                 message: 'Данные пользователя успешно обновлены (без изменения пароля)',
+                success: true,
                 user: updatedUser
             });
         } else {
@@ -224,6 +227,7 @@ const updateUserPwd = async (req, res) => {
         });
 
         return res.status(200).json({
+            success: true,
             message: 'Пароль успешно изменен'
         });
     } catch (error) {
@@ -255,6 +259,7 @@ const deleteUser = async (req, res) => {
 
         return res.status(200).json({
             message: 'Статус пользователя успешно обновлен',
+            success: true,
             user: updatedUser
         });
     } catch (error) {
@@ -312,6 +317,7 @@ const loginUser = async (req, res) => {
         // Отправляем ответ с токеном и информацией о пользователе
         res.status(200).json({
             message: "Login successful",
+            success: true,
             token,
             user: {
                 id: user._id,
