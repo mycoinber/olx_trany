@@ -55,6 +55,9 @@ router.post("/login", UserController.loginUser);
 // Регистрация
 router.post("/register", UserController.registerUser);
 
+// Регистрация
+router.post("/confirm-email", UserController.confirmEmail);
+
 // // Обновление информации о пользователе по ID
 router.put("/:userId", upload.single("media"), UserController.updateUser);
 

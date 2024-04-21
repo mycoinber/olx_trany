@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
-const { $axios } = useNuxtApp();
+import Cookies from "js-cookie"; // Импортируем библиотеку js-cookie
+// const { instance } = useNuxtApp();
+import instance from "~/utils/axios";
 
 interface User {
   name: string;
@@ -10,7 +12,6 @@ export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: null as User | null,
     isAuthenticated: false,
-    token: null as string | null, // Добавляем токен в состояние
   }),
   getters: {
     getUser(state) {
@@ -18,9 +19,6 @@ export const useAuthStore = defineStore("auth", {
     },
     getIsAuthenticated(state) {
       return state.isAuthenticated;
-    },
-    getToken(state) {
-      return state.token; // Добавляем геттер для токена
     },
   },
   actions: {
@@ -33,7 +31,7 @@ export const useAuthStore = defineStore("auth", {
       lastName: string
     ) {
       try {
-        const response = await $axios.post("/user/register", {
+        const response = await instance.post("/user/register", {
           username,
           email,
           password,
@@ -45,7 +43,7 @@ export const useAuthStore = defineStore("auth", {
         if (response.data.success) {
           this.user = response.data.user;
           this.isAuthenticated = true;
-          this.token = response.data.token; // Сохраняем токен
+          Cookies.set("token", response.data.token); // Устанавливаем токен в куки
           console.log("Registration successful");
           return response.data.success;
         } else {
@@ -57,7 +55,7 @@ export const useAuthStore = defineStore("auth", {
     },
     async login(usernameOrEmail: string, password: string) {
       try {
-        const response = await $axios.post("/user/login", {
+        const response = await instance.post("/user/login", {
           usernameOrEmail,
           password,
         });
@@ -65,7 +63,7 @@ export const useAuthStore = defineStore("auth", {
         if (response.data.success) {
           this.user = response.data.user;
           this.isAuthenticated = true;
-          this.token = response.data.token; // Сохраняем токен
+          Cookies.set("token", response.data.token); // Устанавливаем токен в куки
           console.log("Login successful");
         } else {
           console.error("Ошибка авторизации:", response.data.message);
@@ -77,7 +75,7 @@ export const useAuthStore = defineStore("auth", {
     logout() {
       this.user = null;
       this.isAuthenticated = false;
-      this.token = null; // Очищаем токен
+      Cookies.remove("token"); // Удаляем токен из куки
     },
   },
 });

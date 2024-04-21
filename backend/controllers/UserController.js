@@ -108,6 +108,18 @@ const registerUser = async (req, res) => {
       }
     );
 
+    const emailToken = jwt.sign(
+      {
+        userId: newUser._id,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h", // Устанавливаем срок действия токена в 24 часа
+      }
+    );
+
+    console.log(`http://localhost:3000/confirm-email?token=${emailToken}`);
+
     res.status(201).json({
       message: "Пользователь успешно создан",
       success: true,
@@ -119,6 +131,31 @@ const registerUser = async (req, res) => {
       message: "Что-то пошло не так, попробуйте снова",
       error: error,
     });
+  }
+};
+
+const confirmEmail = async (req, res) => {
+  try {
+    // Извлекаем токен из тела запроса
+    const { token } = req.body;
+
+    // Декодируем токен
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Находим пользователя по id, который был закодирован в токене
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return res.status(400).json({ message: "Пользователь не найден" });
+    }
+
+    // Устанавливаем поле validEmail в true
+    user.validEmail = true;
+    await user.save();
+
+    res.status(200).json({ message: "Email успешно подтвержден" });
+  } catch (error) {
+    res.status(500).json({ message: "Что-то пошло не так, попробуйте снова" });
   }
 };
 
@@ -320,7 +357,7 @@ const loginUser = async (req, res) => {
       token,
       success: true,
       user: {
-        id: user._id,
+        _id: user._id,
         email: user.email,
         role: user.role, // Включаем роль пользователя в информацию о пользователе
       },
@@ -343,4 +380,5 @@ module.exports = {
   updateUserPwd,
   deleteUser,
   loginUser,
+  confirmEmail,
 };

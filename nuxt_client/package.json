@@ -23,6 +23,7 @@
   "devDependencies": {
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/style-resources": "^1.2.2",
+    "@types/js-cookie": "^3.0.6",
     "node-sass": "^9.0.0",
     "nuxt-icon": "^0.6.10",
     "sass": "^1.75.0",

@@ -56,6 +56,10 @@ const userSchema = new mongoose.Schema({
   subscription: {
     type: String,
   },
+  validEmail: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Middleware to update the 'updatedAt' field before saving

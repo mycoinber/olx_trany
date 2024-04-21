@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  const router = useRouter();
+
   console.log("registration loaded");
   useSeoMeta({
     title: "Registration",
@@ -33,6 +35,7 @@
     );
     if (response) {
       resetForm();
+      router.push("/confirm-email");
     }
   };
 </script>
