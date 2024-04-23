@@ -3,36 +3,34 @@
     <h1>Email Confirmation</h1>
     <p v-if="loading">Loading...</p>
     <p v-else-if="error">{{ error }}</p>
-    <p v-else-if="!token">
+    <p v-else-if="token === null">
       На вашу почту отправлена ссылка для подтверждения регистрации
     </p>
     <p v-else>Email confirmed successfully!</p>
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { ref, onMounted } from "vue";
   import { useRoute } from "vue-router";
-  import instance from "~/utils/axios";
 
   const route = useRoute();
   const loading = ref(true);
-  const error = ref(null);
-  const token = ref(null);
+  const error = ref("");
+  const token = ref("");
+
+  const authStore = useAuthStore(); // Используем стор
 
   onMounted(async () => {
-    token.value = route.query.token;
-    if (!token.value) {
+    token.value = route.query.token ? String(route.query.token) : null;
+    if (token.value === null) {
       loading.value = false;
       return;
     }
 
     try {
-      const response = await instance.post("/user/confirm-email", {
-        token: token.value,
-      });
+      await authStore.confirmEmail(token.value); // Вызываем метод подтверждения email из стора
       loading.value = false;
-      // Handle response...
     } catch (err) {
       loading.value = false;
       error.value = err.message;

@@ -43,6 +43,8 @@ const upload = multer({
 // Получение всех пользователей
 router.get("/", UserController.getUsers);
 
+router.get("/me", verifyToken, UserController.getMe);
+
 // Получение пользователя по ID
 router.get("/:userId", UserController.getUserById);
 

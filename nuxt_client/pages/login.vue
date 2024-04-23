@@ -3,17 +3,25 @@
   useSeoMeta({
     title: "Login",
   });
+  definePageMeta({
+    layout: "auth",
+  });
   const authStore = useAuthStore();
-  console.log(authStore.getIsAuthenticated);
-  const usernameRef = ref("");
-  const passwordRef = ref("");
+  const router = useRouter();
 
-  const handleLogin = () => {
-    authStore.login(usernameRef.value, passwordRef.value);
+  console.log(authStore.getIsAuthenticated);
+  const username = ref("");
+  const password = ref("");
+
+  const handleLogin = async () => {
+    const response = await authStore.login(username.value, password.value);
+    if (response) {
+      router.push("/");
+    }
   };
 
   const handleRegister = () => {
-    // Ваша логика для обработки нажатия кнопки "Register"
+    router.push("/registration");
   };
 </script>
 
@@ -22,22 +30,17 @@
     <div class="auth__form">
       <h1 class="auth__title">Login</h1>
 
-      <form action="" @submit.prevent="handleLogin">
-        <input
-          type="text"
-          v-model="usernameRef"
-          placeholder="Username"
-          required
-        />
+      <form @submit.prevent="handleLogin">
+        <input type="text" v-model="username" placeholder="Username" required />
         <input
           type="password"
-          v-model="passwordRef"
+          v-model="password"
           placeholder="Password"
           required
         />
         <div class="button__group">
-          <button type="submit" @click="handleLogin">Login</button>
-          <button type="submit">Register</button>
+          <button type="submit">Login</button>
+          <button @click="handleRegister">Register</button>
         </div>
       </form>
     </div>

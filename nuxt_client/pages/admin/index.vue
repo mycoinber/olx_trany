@@ -1,17 +1,12 @@
 <script lang="ts" setup>
-  import { onMounted } from "vue";
-
-  const auth = useAuthStore();
-
-  onMounted(async () => {
-    await auth.initialize();
+  definePageMeta({
+    layout: "admin",
   });
 </script>
 
 <template>
   <section class="grid">
-    <LayoutSidebar />
-    <slot />
+    <h1>Admin page</h1>
   </section>
 </template>
 

@@ -5,6 +5,9 @@
   useSeoMeta({
     title: "Registration",
   });
+  definePageMeta({
+    layout: "auth",
+  });
   const authStore = useAuthStore();
   console.log(authStore.getIsAuthenticated);
 

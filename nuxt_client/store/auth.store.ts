@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
-import Cookies from "js-cookie"; // Импортируем библиотеку js-cookie
-// const { instance } = useNuxtApp();
-import instance from "~/utils/axios";
+import Cookies from "js-cookie";
+import instance from "../utils/axios";
 
 interface User {
   name: string;
   email: string;
+  role: string;
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -22,6 +22,20 @@ export const useAuthStore = defineStore("auth", {
     },
   },
   actions: {
+    async initialize() {
+      const token = Cookies.get("token");
+      if (token) {
+        try {
+          const response = await instance.get("/user/me");
+          if (response.data.success) {
+            this.user = response.data.user;
+            this.isAuthenticated = true;
+          }
+        } catch (error) {
+          console.error("Ошибка сети:", error);
+        }
+      }
+    },
     async register(
       username: string,
       email: string,
@@ -43,7 +57,7 @@ export const useAuthStore = defineStore("auth", {
         if (response.data.success) {
           this.user = response.data.user;
           this.isAuthenticated = true;
-          Cookies.set("token", response.data.token); // Устанавливаем токен в куки
+          Cookies.set("token", response.data.token);
           console.log("Registration successful");
           return response.data.success;
         } else {
@@ -63,10 +77,27 @@ export const useAuthStore = defineStore("auth", {
         if (response.data.success) {
           this.user = response.data.user;
           this.isAuthenticated = true;
-          Cookies.set("token", response.data.token); // Устанавливаем токен в куки
+          Cookies.set("token", response.data.token);
           console.log("Login successful");
+          return response.data.success;
         } else {
           console.error("Ошибка авторизации:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Ошибка сети:", error);
+      }
+    },
+    async confirmEmail(token: string) {
+      try {
+        const response = await instance.post("/user/confirm-email", {
+          token,
+        });
+
+        if (response.data.success) {
+          console.log("Email confirmed successfully!");
+          // Дополнительные действия при успешном подтверждении email
+        } else {
+          console.error("Ошибка подтверждения email:", response.data.message);
         }
       } catch (error) {
         console.error("Ошибка сети:", error);
@@ -75,7 +106,7 @@ export const useAuthStore = defineStore("auth", {
     logout() {
       this.user = null;
       this.isAuthenticated = false;
-      Cookies.remove("token"); // Удаляем токен из куки
+      Cookies.remove("token");
     },
   },
 });

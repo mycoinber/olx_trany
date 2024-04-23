@@ -101,6 +101,7 @@ const registerUser = async (req, res) => {
       {
         userId: newUser._id,
         role: newUser.role, // Добавляем роль в токен
+        email: newUser.email,
       },
       process.env.JWT_SECRET,
       {
@@ -344,6 +345,7 @@ const loginUser = async (req, res) => {
       {
         userId: user._id,
         role: user.role, // Добавляем роль в токен
+        email: user.email,
       },
       process.env.JWT_SECRET,
       {
@@ -371,6 +373,19 @@ const loginUser = async (req, res) => {
   }
 };
 
+const getMe = async (req, res) => {
+  const user = req.user;
+  res.status(200).json({
+    message: "Login successful",
+    success: true,
+    user: {
+      _id: user.userId,
+      email: user.email,
+      role: user.role, // Включаем роль пользователя в информацию о пользователе
+    },
+  });
+};
+
 module.exports = {
   getUsers,
   createUser,
@@ -381,4 +396,5 @@ module.exports = {
   deleteUser,
   loginUser,
   confirmEmail,
+  getMe,
 };

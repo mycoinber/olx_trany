@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   css: ["~/assets/scss/main.scss"],
   modules: ["@nuxt/image", "nuxt-icon", "@pinia/nuxt", "@nuxtjs/google-fonts"],
   vite: {
@@ -28,4 +28,5 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ["./store/**"],
   },
+  plugins: [{ src: "~/plugins/vue-query.js", mode: "client" }],
 });
