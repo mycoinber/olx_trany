@@ -2,8 +2,13 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 // Создаем экземпляр axios
+
+const baseURL = process.server
+  ? "http://olx_back:3001"
+  : "http://localhost:3001";
+
 const instance = axios.create({
-  baseURL: "http://localhost:3001", // Укажите ваш базовый URL здесь
+  baseURL: baseURL, // Укажите ваш базовый URL здесь
 });
 
 // Добавляем Axios Interceptor для запросов
