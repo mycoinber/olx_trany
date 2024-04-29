@@ -7,10 +7,18 @@ const jwt = require("jsonwebtoken");
 // const User = require('../models/User');
 
 async function getUsers(req, res) {
-  console.log("test");
-  res.status(200).json({
-    user: "users",
-  });
+  try {
+    console.log("test");
+    // Получаем всех пользователей из базы данных
+    const users = await User.find();
+
+    // Если пользователи найдены, отправляем их в ответе
+    res.status(200).json({ data: users });
+  } catch (error) {
+    // Если произошла ошибка, отправляем сообщение об ошибке в ответе
+    console.error("Error while fetching users:", error);
+    res.status(500).json({ error: "Failed to fetch users" });
+  }
 }
 
 // Контроллер для создания нового пользователя
