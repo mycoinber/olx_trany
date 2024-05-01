@@ -75,10 +75,14 @@
         />
         <input type="email" v-model="emailRef" placeholder=" Email" required />
         <input type="tel" v-model="phoneRef" placeholder="Phone" required />
-        <button type="submit">Register</button>
+        <button type="submit" class="button__group-send">Register</button>
       </form>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.auth-register{
+ 
+}
+</style>
