@@ -6,16 +6,17 @@
    <div class="header__top">
     <span>Subscribe to the newsletter and receive<strong>BONUSES</strong></span>
    </div>
-<div class="container">
+ 
    <div class="header__bottom">
-     <NuxtLink to="/" class="logo">
+    <div class="header__bottom-inner">
+       <NuxtLink to="/" class="logo">
       <NuxtImg src="/logo.svg" alt="logo" width="20px" height="20px" />
     </NuxtLink>
    
     <LayoutMenu />
-   </div>
-
-  </div>
+    </div>
+        <LayoutMenuButtons />
+    </div>   
   </header>
 </template>
 
@@ -58,10 +59,15 @@
   }
 }
   &__bottom{ 
-    padding:0.929rem 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    
+    &-inner{
+    padding:0.929rem 0 0.929rem 2.222rem;
+       display: flex;
+    justify-content: space-between;
+    gap: 2.222rem; align-items: center;
+    }
     .logo{
           display: block;
     width: 5.556rem;
