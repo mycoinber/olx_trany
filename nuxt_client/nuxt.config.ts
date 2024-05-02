@@ -28,5 +28,6 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ["./store/**"],
   },
+  // plugins: [{ src: "~/plugins/vue-query.js", mode: "client" }],
   plugins: ["~/plugins/vue-query.ts"],
 });
