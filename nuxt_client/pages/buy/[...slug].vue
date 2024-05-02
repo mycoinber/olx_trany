@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-  definePageMeta({
-    layout: "admin",
-  });
+  const route = useRoute();
+  console.log(route.params);
 </script>
 
 <template>

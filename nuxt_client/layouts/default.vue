@@ -9,6 +9,7 @@
 </script>
 
 <template>
+  <LayoutHeader />
   <section class="grid">
     <LayoutSidebar />
     <slot />
