@@ -1,20 +1,28 @@
 export interface IMenuItem {
-    name: string;
-    url: string;
-      
+  icon: string;
+  name: string;
+  url: string;
 }
 
-export const MENU_BUTTONS_DATA: IMenuItem[] = [{  
-    name: 'H',
-    url: '/'
-},{    
-    name: 'L',
-    url: '/registration'
-},{
-    name: 'L',
-    url: '/registration'
-    },{
-    name: 'Place an ad  +',
-    url: '/registration'
-    },
-]
+export const MENU_BUTTONS_DATA: IMenuItem[] = [
+  {
+    icon: "gravity-ui:magnifier",
+    name: "H",
+    url: "/search",
+  },
+  {
+    icon: "gravity-ui:person",
+    name: "user",
+    url: "/user-menu",
+  },
+  {
+    icon: "gravity-ui:heart",
+    name: "L",
+    url: "/favorite",
+  },
+  {
+    icon: "",
+    name: "Place an ad  +",
+    url: "/add-offer",
+  },
+];
