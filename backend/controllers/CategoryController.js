@@ -1,195 +1,151 @@
-const Category = require('../models/categoryModels');
+const Category = require("../models/categoryModels");
+const CategoryField = require("../models/categoryFieldModels");
+const fs = require("fs");
+const path = require("path");
 
-
-// Контроллер для создания новой категории
+// Создание новой категории
 const createCategory = async (req, res) => {
-    const {
-        title,
-        description,
-        slug,
-    } = req.body;
+  const { title, description, parentID, categoryFields } = req.body;
+  const photo = req.file ? req.file.path : null;
 
-    try {
-
-        const existingCategory = await Category.findOne({
-            $or: [{
-                title
-            }, {
-                slug
-            }]
-        });
-        if (existingCategory) {
-            return res.status(400).json({
-                message: 'Категория с таким заголовком, либо слагом уже существует'
-            });
-        }
-
-        // Создаем нового пользователя
-        const newCategory = new Category({
-            title,
-            description,
-            slug,
-
-        });
-        await newCategory.save();
-
-        res.status(201).json({
-            message: 'Категория успешно создана',
-            category: newCategory
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: 'Что-то пошло не так, попробуйте снова'
-        });
+  try {
+    // Проверяем существует ли категория с таким же названием
+    const existingCategory = await Category.findOne({ title });
+    if (existingCategory) {
+      return res
+        .status(400)
+        .json({ message: "Category with this title already exists" });
     }
+
+    // Создаем новую категорию
+    const newCategory = new Category({
+      title,
+      description,
+      parentID,
+      photo: photo ? "/category_images/" + path.basename(photo) : null,
+    });
+
+    // Сохраняем категорию
+    const savedCategory = await newCategory.save();
+
+    // Создаем метаполя для категории, если они переданы
+    if (categoryFields && categoryFields.length > 0) {
+      const savedCategoryFields = await CategoryField.insertMany(
+        categoryFields.map((field) => ({
+          category: savedCategory._id,
+          name: field,
+        }))
+      );
+      savedCategory.metaFields = savedCategoryFields.map((field) => field._id);
+      await savedCategory.save();
+    }
+
+    res.status(201).json(savedCategory);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-// Контроллер для получения категории по айди
-const getCategoryById = async (req, res) => {
-    const categoryId = req.params.categoryId;
-    console.log("test userID: ", categoryId);
-    try {
-
-        const category = await Category.findById(categoryId);
-        if (!category) {
-            res.status(404).json({
-                message: 'Категории нет'
-            });
-            return;
-        }
-
-        res.status(200).json({
-            message: 'Данные категории успешно получены',
-            success: true,
-            category: category
-        });
-    } catch (error) {
-        console.error('Ошибка при получении категории:', error);
-        return res.status(500).json({
-            message: 'Произошла ошибка при получении данных категории'
-        });
-    }
-};
-// Контроллер для получения категории по slug
-const getCategoryBySlug = async (req, res) => {
-    const categorySlug = req.params.slug;
-    try {
-        const category = await Category.findOne({
-            slug: categorySlug
-        });
-
-        if (!category) {
-            res.status(404).json({
-                message: 'Категории не существует'
-            });
-            return;
-        }
-
-        res.status(200).json({
-            message: 'Данные категории успешно получены',
-            success: true,
-            category: category
-        });
-    } catch (error) {
-        console.error('Ошибка при получении категории:', error);
-        return res.status(500).json({
-            message: 'Произошла ошибка при получении данных категории'
-        });
-    }
-};
-
-// контроллер для получения всех категорий
+// Получение всех категорий
 const getAllCategories = async (req, res) => {
-    try {
-        const categories = await Category.find();
-
-        if (!categories || categories.length === 0) {
-            return res.status(404).json({
-                message: 'Категории не найдены'
-            });
-        }
-
-        res.status(200).json({
-            message: 'Список категорий успешно получен',
-            success: true,
-            categories: categories
-        });
-    } catch (error) {
-        console.error('Ошибка при получении списка категорий:', error);
-        res.status(500).json({
-            message: 'Произошла ошибка при получении списка категорий'
-        });
-    }
+  try {
+    const categories = await Category.find();
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-// Обновление информации о категории по ID
+// Получение категории по ID
+const getCategoryById = async (req, res) => {
+  const categoryId = req.params.categoryId;
+  try {
+    const category = await Category.findById(categoryId);
+
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+    const categoryFields = await CategoryField.find({
+      category: category._id,
+    });
+    const categoryWithFields = {
+      _id: category._id,
+      title: category.title,
+      description: category.description,
+      parentID: category.parentID,
+      photo: category.photo,
+      slug: category.slug,
+      categoryFields: categoryFields,
+    };
+    res.json(categoryWithFields);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Получение категории по Slug
+const getCategoryBySlug = async (req, res) => {
+  const categorySlug = req.params.categorySlug;
+  try {
+    const category = await Category.findOne({ slug: categorySlug }).populate(
+      "CategoryField"
+    );
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+    res.json(category);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Обновление категории по ID
 const updateCategory = async (req, res) => {
-    const categoryId = req.params.categoryId;
-    let newCategoryData = req.body;
-    let mediaPath = "";
-    if (req.file) {
-        mediaPath = req.file.path; // Путь к медиафайлу
-        newCategoryData = {
-            ...newCategoryData,
-            logo: mediaPath
-        };
-    }
-    try {
-        const updatedCategory = await Category.findByIdAndUpdate(categoryId, {
-            $set: newCategoryData
-        }, {
-            new: true
-        });
+  const categoryId = req.params.categoryId;
+  const { name } = req.body;
+  const { categoryImage } = req.file; // Получаем путь к загруженному изображению
 
-        if (!updatedCategory) {
-            return res.status(404).json({
-                message: 'Категория не найдена'
-            });
-        }
-
-        res.status(200).json({
-            message: 'Категория успешно обновлена',
-            category: updatedCategory
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: 'Что-то пошло не так, попробуйте снова'
-        });
+  try {
+    const updatedCategory = await Category.findByIdAndUpdate(
+      categoryId,
+      { name, image: categoryImage }, // Обновляем имя и изображение категории
+      { new: true }
+    );
+    if (!updatedCategory) {
+      return res.status(404).json({ message: "Category not found" });
     }
+    res.json(updatedCategory);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // Удаление категории по ID
 const deleteCategory = async (req, res) => {
-    const categoryId = req.params.categoryId;
-
-    try {
-
-        const existingCategory = await Category.findById(categoryId);
-        if (!existingCategory) {
-            return res.status(404).json({
-                message: 'Категория не найдена'
-            });
-        }
-
-
-        await existingCategory.remove();
-
-        res.status(200).json({
-            message: 'Категория успешно удалена',
-            category: existingCategory
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: 'Что-то пошло не так, попробуйте снова'
-        });
+  const categoryId = req.params.categoryId;
+  try {
+    const deletedCategory = await Category.findByIdAndDelete(categoryId);
+    if (!deletedCategory) {
+      return res.status(404).json({ message: "Category not found" });
     }
+
+    await CategoryField.deleteMany({ category: categoryId });
+    // Удаляем изображение категории, если оно существует
+    if (deletedCategory.photo) {
+      fs.unlinkSync(path.join(__dirname, "..", deletedCategory.photo));
+    }
+
+    res.json({ message: "Category deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 module.exports = {
-    createCategory,
-    getCategoryById,
-    getCategoryBySlug,
-    getAllCategories,
-    updateCategory,
-    deleteCategory
+  createCategory,
+  getAllCategories,
+  getCategoryById,
+  getCategoryBySlug,
+  updateCategory,
+  deleteCategory,
 };

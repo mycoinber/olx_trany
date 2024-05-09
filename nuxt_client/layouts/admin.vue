@@ -8,7 +8,7 @@
     if (!authStore.getIsAuthenticated) {
       router.push("/login"); // Перенаправление на страницу входа
     }
-    if (authStore.getUser?.role !== "admin") {
+    if (authStore.getIsAuthenticated && authStore.getUser?.role !== "admin") {
       router.push("/"); // Перенаправление на страницу входа
       alert("Доступ разрешен только для администраторов");
     }

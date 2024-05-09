@@ -7,7 +7,7 @@ const path = require("path");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../uploads/")); // Укажите путь к директории для загрузки файлов
+    cb(null, path.join(__dirname, "../public/")); // Укажите путь к директории для загрузки файлов
   },
   filename: function (req, file, cb) {
     const uniqueSuffix =
@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
       "-" +
       file.originalname.replace(/\s/g, "-");
     cb(null, uniqueSuffix);
-    req.filepath = "/uploads/" + uniqueSuffix; // Сохраняем относительный путь
+    req.filepath = "/public/" + uniqueSuffix; // Сохраняем относительный путь
   },
 });
 
