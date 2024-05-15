@@ -1,13 +1,13 @@
 <template>
-    <section class="rent">
+    <section class="commercial">
      <div class="container">
-        <h2 class="rent-title">Top to Rent</h2>
-     <div class="rent-wrapper">
-      <OfferCard :type="'type3'" :data="OFFER_DATA[0]" />
-        <OfferCard :type="'type3'" :data="OFFER_DATA[1]" />
-      <OfferCard :type="'type3'" :data="OFFER_DATA[2]" />
+        <h2 class="sale-title">Top for Sale</h2>
+     <div class="commercial-wrapper">
+      <OfferCard :type="'type1'" :data="OFFER_DATA[0]" />
+        <OfferCard :type="'type1'" :data="OFFER_DATA[1]" />
+       
      </div>
-     <button class="rent-button">See more</button>
+     <button class="sale-button">See more</button>
      </div>
     </section>
   </template>
@@ -17,36 +17,37 @@
   
   const OFFER_DATA: Offer[] = [
       {
-        title: "LOREM LOREM TEEST",
+        title: "SHARK ROCKER",
         _id: "1",
-        image: "https://web-zoopark.ru/wp-content/uploads/2018/07/1-162.jpg",
-        price: "100",
-        location: "Kyiv",
-        date: "3 days ago", 
-        square: "60"
+        image: "https://focus.ua/static/storage/thumbs/920x465/4/5e/bc0a65ee-45612a2a2f58a1de340f5ba4ffc985e4.jpg?v=2045_1",
+        price: "1488 uh",
+        location: "Somewhere",
+        date: "13 days ago", 
+        square: "630"
       },
       {
-          title: "test2",
+          title: "SHARK SMILES",
           _id: "2",
-          image: "https://c72267e4.rocketcdn.me/wp-content/uploads/2022/10/855cafcf-3361-43be-928c-4ff53736eeae.jpg",
-        price: "100",
-        location: "Dnipro",
-        date: "14 days ago", 
-       square: "880"
+          image: "https://s0.rbk.ru/v6_top_pics/media/img/2/32/346939922953322.jpeg",
+        price: "13200",
+        location: "TEST-location",
+        date: "2 years ago", 
+       square: "32"
         },{
-          title: "price2",
+          title: "SHARK AGRESSOR",
           _id: "3",
-          image: "https://national-travel.ru/wp-content/uploads/wtt-images/2019/01/1c442c9e06817b6b4483c5cc2b21aa70-1.jpg",
-        price: "100",
+          image: "https://s0.rbk.ru/v6_top_pics/media/img/6/16/346898632338166.webp",
+        price: "1703 $",
         location: "Odesa",
-        date: "3 days ago", 
-       square: "30"
+        date: "2 days ago", 
+       square: "32"
         },
     ];
   </script>
   
   <style lang="scss">
-  .rent {
+  .commercial {
+padding: 6.667rem 0;
     &-title{
         text-align: center;
 margin-bottom: 2.222rem;
@@ -61,6 +62,7 @@ font-size: 2.444rem;
    align-items: center;
    justify-content: center;
    margin-bottom: 2.222rem;
+
       }
       &-button{
         text-transform: uppercase;

@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <div v-if="isLoading">Загрузка...</div>
-    <div v-else-if="error">Ошибка: {{ error.message }}</div>
-    <div v-else>{{ data }}</div>
-  </div>
+  <main>
+   <MainHero />
+   <MainRent />
+   <MainSale />
+   <MainCommercial />
+  </main>
 </template>
 
 <script lang="ts" setup>
