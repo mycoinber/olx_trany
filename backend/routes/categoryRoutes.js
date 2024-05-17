@@ -4,9 +4,10 @@ const CategoryController = require("../controllers/CategoryController");
 const multer = require("multer");
 const path = require("path");
 
+// Настройка хранилища для multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../uploads/")); // Укажите путь к директории для загрузки файлов
+    cb(null, path.join(__dirname, "../public/category_images/")); // Указываем путь для сохранения изображений категорий
   },
   filename: function (req, file, cb) {
     const uniqueSuffix =
@@ -14,31 +15,30 @@ const storage = multer.diskStorage({
       "-" +
       file.originalname.replace(/\s/g, "-");
     cb(null, uniqueSuffix);
-    req.filepath = "/uploads/" + uniqueSuffix; // Сохраняем относительный путь
   },
 });
 
+// Фильтр для файлов (только изображения)
+const fileFilter = function (req, file, cb) {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Not an image file!"), false);
+  }
+};
+
+// Настройка multer
 const upload = multer({
   storage: storage,
-  fileFilter: function (req, file, cb) {
-    if (file.mimetype.startsWith("image/")) {
-      cb(null, true);
-    } else if (file.mimetype.startsWith("video/")) {
-      cb(null, true);
-    } else {
-      cb(new Error("Not an image or video file!"), false);
-    }
-  },
-  limits: {
-    fileSize: function (req, file, cb) {
-      if (file.mimetype.startsWith("image/")) {
-        return 4 * 1024 * 1024; // 4MB
-      } else if (file.mimetype.startsWith("video/")) {
-        return 200 * 1024 * 1024; // 200MB
-      }
-    },
-  },
+  fileFilter: fileFilter,
 });
+
+// Создание новой категории
+router.post(
+  "/",
+  upload.single("categoryImage"),
+  CategoryController.createCategory
+);
 
 // Получение всех категорий
 router.get("/", CategoryController.getAllCategories);
@@ -47,15 +47,12 @@ router.get("/", CategoryController.getAllCategories);
 router.get("/:categoryId", CategoryController.getCategoryById);
 
 // Получение категории по Slug
-router.get("/:categorySlug", CategoryController.getCategoryBySlug);
+router.get("/slug/:categorySlug", CategoryController.getCategoryBySlug);
 
-// Создание новой категории
-router.post("/", CategoryController.createCategory);
-
-// Обновление информации о категории по ID
+// Обновление категории по ID
 router.put(
   "/:categoryId",
-  upload.single("media"),
+  upload.single("categoryImage"),
   CategoryController.updateCategory
 );
 

@@ -3,17 +3,21 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
+const ctegoryFieldRoutes = require("./routes/ctegoryFieldRoutes");
 const front = process.env.FRONT;
 const allowedOrigins = [front];
 const dbuser = process.env.DB_UNAME;
 const dbpass = process.env.DB_PWD;
 const dbname = process.env.DB_NAME;
 const bodyParser = require("body-parser");
+const path = require("path");
 
 require("dotenv").config();
 
 const app = express(); //Создаем приложение
 const port = process.env.PORT || 3000; //Указываем порт, если он есть(бэк)
+
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   bodyParser.urlencoded({
@@ -58,6 +62,7 @@ app.use(express.json());
 //Роуты
 app.use("/user", userRoutes);
 app.use("/category", categoryRoutes);
+app.use("/category-field", ctegoryFieldRoutes);
 
 //прослушка приложения
 app.listen(port, () => {

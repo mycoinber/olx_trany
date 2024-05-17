@@ -10,4 +10,9 @@ export const ADMIN_MENU_DATA: IMenuItem[] = [
     name: "Home",
     url: "/admin",
   },
+  {
+    icon: "radix-icons:dashboard ",
+    name: "Categories",
+    url: "/admin/categories",
+  },
 ];

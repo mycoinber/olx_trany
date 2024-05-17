@@ -10,15 +10,15 @@
 
 <template>
   <LayoutHeader />
-  <section class="grid">
+   
   
     <slot />
-  </section>
+  
 </template>
 
 <style scoped>
-  .grid {
+  /* .grid {
     display: grid;
     grid-template-columns: 1fr 6fr;
-  }
+  } */
 </style>
