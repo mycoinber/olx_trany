@@ -3,7 +3,7 @@ import { FOOTER_SUB_DATA } from "./footersub.data";
 </script>
 
 <template>
-  <nav class="navigation">
+  <nav class="footer-navigation">
     <NuxtLink v-for="item in FOOTER_SUB_DATA" :key="item.name" :to="item.url">
       <span>{{ item.name }}</span>
     </NuxtLink>
@@ -11,7 +11,7 @@ import { FOOTER_SUB_DATA } from "./footersub.data";
 </template>
 
 <style>
-.navigation {
+.footer-navigation {
   display: flex;
   gap: 9.722rem;
   a {

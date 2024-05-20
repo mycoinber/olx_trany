@@ -43,18 +43,24 @@ onMounted(() => {
     width: 9.556rem;
     height: 2.2rem;
     margin-bottom: 3.389rem;
+
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
   }
+
   &-copyright {
     font-weight: 500;
     font-size: 0.778rem;
     line-height: 0.933rem;
     color: #141414;
     text-transform: uppercase;
+  }
+  &-bottom {
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>
