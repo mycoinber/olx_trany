@@ -4,6 +4,10 @@
     <MainRent />
     <MainSale />
     <MainCommercial />
+    <MainAd />
+
+    <MainBlog />
+    <MainAbout />
   </main>
 </template>
 

@@ -1,23 +1,22 @@
 <script lang="ts" setup>
-  import { onMounted } from "vue";
+import { onMounted } from "vue";
 
-  const auth = useAuthStore();
+const auth = useAuthStore();
 
-  onMounted(async () => {
-    await auth.initialize();
-  });
+onMounted(async () => {
+  await auth.initialize();
+});
 </script>
 
 <template>
   <LayoutHeader />
-   
-  
-    <slot />
-  
+
+  <slot />
+  <LayoutFooter />
 </template>
 
 <style scoped>
-  /* .grid {
+/* .grid {
     display: grid;
     grid-template-columns: 1fr 6fr;
   } */
