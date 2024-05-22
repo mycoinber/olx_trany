@@ -1,12 +1,35 @@
 const fs = require("fs");
 const path = require("path");
 const Offer = require("../models/offerModels");
+const Metadata = require("../models/metadataModels");
 
 const createOffer = async (req, res) => {
-  const { title, description, slug, createdBy, price, category, metadata } =
-    req.body;
-  const images = req.files.map((file) => file.path); // Получаем пути к загруженным изображениям
+  console.log(req.body);
+  const createdBy = req.user.userId;
+  const { title, description, slug, price, category, metadata } = req.body;
+  const images = req.files.map((file) =>
+    file.path.replace("/usr/src/app/public", "")
+  ); // Получаем пути к загруженным изображениям
+
   try {
+    // Преобразуем объект metadata в массив
+    const metadataArray = Object.values(metadata).map((meta) =>
+      JSON.parse(meta)
+    );
+
+    // Сохраняем метаданные отдельно
+    const metadataIds = await Promise.all(
+      metadataArray.map(async (field) => {
+        const newMetadata = new Metadata({
+          categoryField: field.fieldId, // исправляем название поля
+          fieldName: field.name,
+          values: field.value,
+        });
+        const savedMetadata = await newMetadata.save();
+        return savedMetadata._id;
+      })
+    );
+
     const newOffer = new Offer({
       title,
       description,
@@ -15,11 +38,13 @@ const createOffer = async (req, res) => {
       createdBy,
       price,
       category,
-      metadata,
+      metadata: metadataIds, // Ссылка на сохраненные метаданные
     });
+
     const savedOffer = await newOffer.save();
     res.status(201).json(savedOffer);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };

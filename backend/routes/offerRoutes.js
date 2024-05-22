@@ -3,6 +3,8 @@ const router = express.Router();
 const OfferController = require("../controllers/OfferController");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
+const { verifyToken, verifyRole } = require("../middleware/verifyToken");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -10,7 +12,18 @@ const storage = multer.diskStorage({
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
     const uploadPath = path.join(__dirname, `../public/${year}-${month}/`);
-    cb(null, uploadPath);
+
+    // Проверяем, существует ли директория
+    fs.access(uploadPath, (error) => {
+      if (error) {
+        // Если директория не существует, создаем её
+        return fs.mkdir(uploadPath, { recursive: true }, (error) => {
+          cb(error, uploadPath);
+        });
+      }
+      // Если директория существует, просто продолжаем
+      return cb(null, uploadPath);
+    });
   },
   filename: function (req, file, cb) {
     const uniqueSuffix =
@@ -48,13 +61,18 @@ const upload = multer({
 });
 
 // Получение всех офферов
-router.get("/", OfferController.getAllOffers);
+// router.get("/", OfferController.getAllOffers);
 
 // Получение оффера по ID
 router.get("/:offerId", OfferController.getOfferById);
 
 // Создание нового оффера
-router.post("/", upload.array("images", 10), OfferController.createOffer); // Максимум 10 изображений
+router.post(
+  "/",
+  verifyToken,
+  upload.array("images", 10),
+  OfferController.createOffer
+); // Максимум 10 изображений
 
 // Обновление информации об оффере по ID
 router.put(

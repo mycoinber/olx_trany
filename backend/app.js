@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
+const offerRoutes = require("./routes/offerRoutes");
 const ctegoryFieldRoutes = require("./routes/ctegoryFieldRoutes");
 const front = process.env.FRONT;
 const allowedOrigins = [front];
@@ -63,6 +64,7 @@ app.use(express.json());
 app.use("/user", userRoutes);
 app.use("/category", categoryRoutes);
 app.use("/category-field", ctegoryFieldRoutes);
+app.use("/offer", offerRoutes);
 
 //прослушка приложения
 app.listen(port, () => {

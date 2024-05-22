@@ -38,6 +38,7 @@
   const newField = ref<string>("");
   const fieldType = ref("text");
   const fieldOptions = ref([{ title: "", value: "" }]);
+  const overview = ref(false);
 
   const {
     isPending,
@@ -75,6 +76,7 @@
       name: newField.value,
       type: fieldType.value,
       options: fieldOptions.value,
+      overview: overview.value,
     };
     mutate(payload);
   };
@@ -105,7 +107,11 @@
     <div v-for="field in categoryFields" :key="field._id" class="field-item">
       <h3>{{ field.name }}</h3>
       <div
-        v-if="field.type === 'radio' || field.type === 'select'"
+        v-if="
+          field.type === 'radio' ||
+          field.type === 'select' ||
+          field.type === 'checkbox'
+        "
         class="options-list"
       >
         <div
@@ -119,18 +125,26 @@
     </div>
     <!-- Форма для добавления новых полей категории -->
     <div class="add-category-field-form">
-      <select v-model="fieldType">
-        <option value="text">Текст</option>
-        <option value="radio">Радио</option>
-        <option value="select">Select</option>
-      </select>
-
-      <input
-        v-model="newField"
-        type="text"
-        placeholder="Название поля"
-        required
-      />
+      <div>
+        <input type="checkbox" v-model="overview" id="overview" />
+        <label for="overview">Обзор</label>
+      </div>
+      <div>
+        <select v-model="fieldType">
+          <option value="text">Текст</option>
+          <option value="radio">Радио</option>
+          <option value="select">Select</option>
+          <option value="checkbox">Checkbox</option>
+        </select>
+      </div>
+      <div>
+        <input
+          v-model="newField"
+          type="text"
+          placeholder="Название поля"
+          required
+        />
+      </div>
 
       <div v-if="fieldType === 'radio' || fieldType === 'checkbox'">
         <div v-for="(option, index) in fieldOptions" :key="index">

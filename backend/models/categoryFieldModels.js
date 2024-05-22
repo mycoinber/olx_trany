@@ -19,7 +19,12 @@ const optionSchema = new Schema({
 const categoryFieldSchema = new Schema({
   category: { type: Schema.Types.ObjectId, ref: "Category" },
   name: { type: String, required: true },
-  type: { type: String, required: true, enum: ["text", "radio", "select"] },
+  overview: { type: Boolean, default: false },
+  type: {
+    type: String,
+    required: true,
+    enum: ["text", "radio", "select", "checkbox"],
+  },
   options: [optionSchema],
 });
 

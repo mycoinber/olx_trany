@@ -10,7 +10,7 @@
     } else if (
       item.url === "/user-menu" ||
       item.url === "/favorite" ||
-      item.url === "/add-offer"
+      item.url === "/myaccount/offers/new"
     ) {
       if (authStore.getIsAuthenticated) {
         router.push(item.url);

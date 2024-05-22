@@ -1,6 +1,7 @@
 /node_modules
 /mongodb_data
 backend/uploads/*
+backend/public/*
 .env
 docker-compose copy.yml
 docker-compose-db.yml
