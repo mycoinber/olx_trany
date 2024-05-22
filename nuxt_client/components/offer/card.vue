@@ -14,7 +14,7 @@
           <span>{{ data.location }}</span>
           <span>{{ data.date }}</span>
         </div>
-        <span class="card-square">{{ data.square }}</span>
+        <span class="card-square">{{ data.square }}м²</span>
       </div>
     </div>
   </a>
