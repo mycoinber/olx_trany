@@ -1,18 +1,11 @@
 <script lang="ts" setup>
-  import { onMounted } from "vue";
-
-  const auth = useAuthStore();
-
-  onMounted(async () => {
-    await auth.initialize();
-  });
+  const route = useRoute();
+  console.log(route.params);
 </script>
 
 <template>
-  <LayoutHeader />
   <section class="grid">
-  
-    <slot />
+    <h1>Admin page</h1>
   </section>
 </template>
 

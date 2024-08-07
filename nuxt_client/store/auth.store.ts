@@ -1,10 +1,11 @@
-// ~/store/auth.ts
 import { defineStore } from "pinia";
-import instance from "../plugins/axios";
+import Cookies from "js-cookie";
+import instance from "../utils/axios";
 
 interface User {
   name: string;
   email: string;
+  role: string;
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -21,31 +22,91 @@ export const useAuthStore = defineStore("auth", {
     },
   },
   actions: {
-    async login(username: string, password: string) {
+    async initialize() {
+      const token = Cookies.get("token");
+      if (token) {
+        try {
+          const response = await instance.get("/user/me");
+          if (response.data.success) {
+            this.user = response.data.user;
+            this.isAuthenticated = true;
+          }
+        } catch (error) {
+          console.error("Ошибка сети:", error);
+        }
+      }
+    },
+    async register(
+      username: string,
+      email: string,
+      password: string,
+      phone: string,
+      firstName: string,
+      lastName: string
+    ) {
       try {
-        // Отправляем запрос на сервер для авторизации
-        const response = await instance.post("/login", {
+        const response = await instance.post("/user/register", {
           username,
+          email,
           password,
+          phone,
+          firstName,
+          lastName,
         });
 
-        // Если авторизация прошла успешно, сохраняем пользователя в состоянии
         if (response.data.success) {
           this.user = response.data.user;
           this.isAuthenticated = true;
-          console.log('Login successful');
+          Cookies.set("token", response.data.token);
+          console.log("Registration successful");
+          return response.data.success;
         } else {
-          // Обрабатываем ошибку авторизации
+          console.error("Ошибка регистрации:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Ошибка сети:", error);
+      }
+    },
+    async login(usernameOrEmail: string, password: string) {
+      try {
+        const response = await instance.post("/user/login", {
+          usernameOrEmail,
+          password,
+        });
+
+        if (response.data.success) {
+          this.user = response.data.user;
+          this.isAuthenticated = true;
+          Cookies.set("token", response.data.token);
+          console.log("Login successful");
+          return response.data.success;
+        } else {
           console.error("Ошибка авторизации:", response.data.message);
         }
       } catch (error) {
-        // Обрабатываем ошибку сети
+        console.error("Ошибка сети:", error);
+      }
+    },
+    async confirmEmail(token: string) {
+      try {
+        const response = await instance.post("/user/confirm-email", {
+          token,
+        });
+
+        if (response.data.success) {
+          console.log("Email confirmed successfully!");
+          // Дополнительные действия при успешном подтверждении email
+        } else {
+          console.error("Ошибка подтверждения email:", response.data.message);
+        }
+      } catch (error) {
         console.error("Ошибка сети:", error);
       }
     },
     logout() {
       this.user = null;
       this.isAuthenticated = false;
+      Cookies.remove("token");
     },
   },
 });

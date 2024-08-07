@@ -1,24 +1,62 @@
 const express = require("express");
 const router = express.Router();
 const CategoryController = require("../controllers/CategoryController");
+const multer = require("multer");
+const path = require("path");
 
-// // Получение всех пользователей
-// router.get('/', UserController.getUsers);
+// Настройка хранилища для multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "../public/category_images/")); // Указываем путь для сохранения изображений категорий
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix =
+      new Date().toISOString().replace(/:/g, "-") +
+      "-" +
+      file.originalname.replace(/\s/g, "-");
+    cb(null, uniqueSuffix);
+  },
+});
 
-// // Получение пользователя по ID
-// router.get('/:userId', UserController.getUserById);
+// Фильтр для файлов (только изображения)
+const fileFilter = function (req, file, cb) {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Not an image file!"), false);
+  }
+};
 
-// // Создание нового пользователя
-// router.post('/', UserController.createUser);
-// router.post('/register', UserController.registerUser);
+// Настройка multer
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+});
 
-// // // Обновление информации о пользователе по ID
-// router.put('/:userId', UserController.updateUser);
+// Создание новой категории
+router.post(
+  "/",
+  upload.single("categoryImage"),
+  CategoryController.createCategory
+);
 
-// // // Обновление информации о пользователе по ID
-// router.put('/changepassword/:userId', UserController.updateUserPwd);
+// Получение всех категорий
+router.get("/", CategoryController.getAllCategories);
 
-// // // Удаление пользователя по ID
-// router.delete('/:userId', UserController.deleteUser);
+// Получение категории по ID
+router.get("/:categoryId", CategoryController.getCategoryById);
+
+// Получение категории по Slug
+router.get("/slug/:categorySlug", CategoryController.getCategoryBySlug);
+
+// Обновление категории по ID
+router.put(
+  "/:categoryId",
+  upload.single("categoryImage"),
+  CategoryController.updateCategory
+);
+
+// Удаление категории по ID
+router.delete("/:categoryId", CategoryController.deleteCategory);
 
 module.exports = router;

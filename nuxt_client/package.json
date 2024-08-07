@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxt/image": "^1.5.0",
     "@pinia/nuxt": "^0.5.1",
+    "@tanstack/vue-query": "^5.32.0",
     "axios": "^1.6.8",
     "js-cookie": "^3.0.5",
     "nuxt": "^3.11.2",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/style-resources": "^1.2.2",
+    "@types/js-cookie": "^3.0.6",
     "node-sass": "^9.0.0",
     "nuxt-icon": "^0.6.10",
     "sass": "^1.75.0",
