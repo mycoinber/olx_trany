@@ -60,7 +60,6 @@
   });
 
   const todosData = queryClient.getQueryData(["category-fields", categoryId]);
-  console.log(todosData);
 
   const addOption = () => {
     fieldOptions.value.push({ title: "", value: "" });

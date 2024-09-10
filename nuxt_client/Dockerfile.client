@@ -1,21 +1,16 @@
 # Dockerfile.client
 
 # Use official Node.js image as a base
-FROM node:20.12.1
+FROM --platform=linux/amd64 node:20.12.1
 
+WORKDIR /usr/src/app
 # Copy package.json and package-lock.json files
-COPY package*.json ./
-
+COPY package*.json /usr/src/app
+RUN ls -la
 # Install dependencies
 RUN npm install
 
+RUN ls -la
+
 # Copy all files
 COPY . .
-
-WORKDIR /usr/src/app/
-
-# Expose port (if necessary)
-# EXPOSE 8080
-
-# Command to run the application
-# CMD ["npm", "run", "dev"]

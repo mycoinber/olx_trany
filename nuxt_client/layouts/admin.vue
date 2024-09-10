@@ -12,9 +12,6 @@
       router.push("/"); // Перенаправление на страницу входа
       alert("Доступ разрешен только для администраторов");
     }
-
-    console.log(authStore.getIsAuthenticated);
-    console.log(authStore.getUser);
   });
 </script>
 

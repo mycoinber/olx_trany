@@ -1,50 +1,61 @@
 <template>
-  <section class="sale">
+  <section class="hero" v-if="rentData && rentData.length > 0">
     <div class="container">
-      <h2 class="sale-title">Top for Sale</h2>
-      <div class="sale-wrapper">
-        <OfferCard :type="'type3'" :data="OFFER_DATA[0]" />
-        <OfferCard :type="'type3'" :data="OFFER_DATA[1]" />
-        <OfferCard :type="'type3'" :data="OFFER_DATA[2]" />
+      <h2 class="rent-title">Top to Sale</h2>
+      <div class="rent-wrapper">
+        <OfferCard
+          v-for="(item, index) in rentData"
+          :key="index"
+          :type="'type3'"
+          :offer="item"
+        />
       </div>
-      <button class="sale-button">See more</button>
+      <button class="rent-button">See more</button>
     </div>
   </section>
 </template>
 
-<script setup lang="ts">
-  const OFFER_DATA: Offer[] = [
-    {
-      title: "SHARK ROCKER",
-      _id: "1",
-      image:
-        "https://focus.ua/static/storage/thumbs/920x465/4/5e/bc0a65ee-45612a2a2f58a1de340f5ba4ffc985e4.jpg?v=2045_1",
-      price: "1488 uh",
-      location: "Somewhere",
-      date: "13 days ago",
-      square: "630",
-    },
-    {
-      title: "SHARK SMILES",
-      _id: "2",
-      image:
-        "https://s0.rbk.ru/v6_top_pics/media/img/2/32/346939922953322.jpeg",
-      price: "13200",
-      location: "TEST-location",
-      date: "2 years ago",
-      square: "32",
-    },
-    {
-      title: "SHARK AGRESSOR",
-      _id: "3",
-      image:
-        "https://s0.rbk.ru/v6_top_pics/media/img/6/16/346898632338166.webp",
-      price: "1703 $",
-      location: "Odesa",
-      date: "2 days ago",
-      square: "32",
-    },
-  ];
+<script setup>
+  import { useQuery } from "@tanstack/vue-query";
+  const { $axios } = useNuxtApp();
+
+  const fetchOfers = async ({ queryKey }) => {
+    const [_key, { limit, category }] = queryKey;
+
+    try {
+      const response = await $axios.get(`/offer`, {
+        params: { category, limit },
+      });
+      return response.data; // Возвращаем данные, если запрос успешен
+    } catch (error) {
+      // Обрабатываем ошибку и выводим ее в консоль
+      console.error("Error fetching services:", error);
+
+      // Можно вернуть пустой массив или значение по умолчанию, чтобы избежать ошибок в компоненте
+      return [];
+    }
+  };
+
+  const {
+    data: rentData,
+    isError,
+    refetch,
+    suspense,
+  } = useQuery({
+    queryKey: computed(() => [
+      "offers",
+      {
+        category: "Sale",
+        limit: 3,
+      },
+    ]),
+    queryFn: fetchOfers,
+    suspense: true,
+  });
+
+  onServerPrefetch(async () => {
+    await suspense();
+  });
 </script>
 
 <style lang="scss">
@@ -87,6 +98,8 @@
       gap: 0.4rem;
       align-items: center;
       margin-bottom: 5.667rem;
+      width: 9.61rem;
+      height: 2.72rem;
 
       &::after {
         transition: transform 0.3s ease;

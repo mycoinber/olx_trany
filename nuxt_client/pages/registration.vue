@@ -1,46 +1,44 @@
 <script lang="ts" setup>
-const router = useRouter();
+  const router = useRouter();
 
-console.log("registration loaded");
-useSeoMeta({
-  title: "Registration",
-});
-definePageMeta({
-  layout: "auth",
-});
-const authStore = useAuthStore();
-console.log(authStore.getIsAuthenticated);
+  useSeoMeta({
+    title: "Registration",
+  });
+  definePageMeta({
+    layout: "auth",
+  });
+  const authStore = useAuthStore();
 
-const usernameRef = ref("");
-const passwordRef = ref("");
-const firstNameRef = ref("");
-const lastNameRef = ref("");
-const emailRef = ref("");
-const phoneRef = ref("");
+  const usernameRef = ref("");
+  const passwordRef = ref("");
+  const firstNameRef = ref("");
+  const lastNameRef = ref("");
+  const emailRef = ref("");
+  const phoneRef = ref("");
 
-const resetForm = () => {
-  usernameRef.value = "";
-  passwordRef.value = "";
-  firstNameRef.value = "";
-  lastNameRef.value = "";
-  emailRef.value = "";
-  phoneRef.value = "";
-};
+  const resetForm = () => {
+    usernameRef.value = "";
+    passwordRef.value = "";
+    firstNameRef.value = "";
+    lastNameRef.value = "";
+    emailRef.value = "";
+    phoneRef.value = "";
+  };
 
-const handleRegister = async () => {
-  const response = await authStore.register(
-    usernameRef.value,
-    emailRef.value,
-    passwordRef.value,
-    phoneRef.value,
-    firstNameRef.value,
-    lastNameRef.value
-  );
-  if (response) {
-    resetForm();
-    router.push("/confirm-email");
-  }
-};
+  const handleRegister = async () => {
+    const response = await authStore.register(
+      usernameRef.value,
+      emailRef.value,
+      passwordRef.value,
+      phoneRef.value,
+      firstNameRef.value,
+      lastNameRef.value
+    );
+    if (response) {
+      resetForm();
+      router.push("/confirm-email");
+    }
+  };
 </script>
 
 <template>
@@ -95,15 +93,15 @@ const handleRegister = async () => {
 </template>
 
 <style lang="scss">
-.another-header {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  padding: 2.222rem 0;
-  &-button {
-    color: black;
+  .another-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    padding: 2.222rem 0;
+    &-button {
+      color: black;
 
-    font-size: 1rem;
+      font-size: 1rem;
+    }
   }
-}
 </style>

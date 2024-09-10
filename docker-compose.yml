@@ -19,7 +19,7 @@ services:
       MONGODB_URI: "mongodb://${DB_UNAME}:${DB_PWD}@olx_mongo:27017/${DB_NAME}"
     volumes:
       - ./backend:/usr/src/app
-    command: ["node", "app.js"]
+    command: ["npx", "nodemon", "app.js"]
   nuxt_client:
     container_name: nuxt_client
     build:
@@ -32,7 +32,7 @@ services:
     restart: always
     volumes:
       - ./nuxt_client:/usr/src/app
-    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+    command: ["/bin/sh", "-c", "npm install && npm run dev -- --host 0.0.0.0"]
 
   olx_mongo:
     image: mongo:latest

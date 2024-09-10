@@ -2,7 +2,17 @@
 export default defineNuxtConfig({
   devtools: { enabled: false },
   css: ["~/assets/scss/main.scss"],
-  modules: ["@nuxt/image", "nuxt-icon", "@pinia/nuxt", "@nuxtjs/google-fonts"],
+  modules: [
+    "@nuxt/image",
+    "nuxt-icon",
+    "@pinia/nuxt",
+    "@nuxtjs/google-fonts",
+    "@nuxt/content",
+  ],
+  content: {
+    api: { baseURL: "/_content" },
+    watch: false,
+  },
   vite: {
     server: {
       watch: {
@@ -18,6 +28,14 @@ export default defineNuxtConfig({
       },
     },
   },
+  routeRules: {
+    "/": {
+      ssr: true, // Главная страница будет рендериться на сервере
+    },
+    myaccount: {
+      ssr: false,
+    },
+  },
   googleFonts: {
     families: {
       Montserrat: {
@@ -28,6 +46,20 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ["./store/**"],
   },
-  // plugins: [{ src: "~/plugins/vue-query.js", mode: "client" }],
+  runtimeConfig: {
+    public: {
+      backHost: process.env.BACK_HOST || "http://localhost:3001",
+    },
+  },
   plugins: ["~/plugins/vue-query.ts"],
+  image: {
+    providers: {
+      myCustom: {
+        provider: "~/providers/customProvider.ts",
+        options: { baseURL: process.env.BACK_HOST || "http://localhost:3001" },
+      },
+    },
+    // Укажите провайдера по умолчанию, если нужно
+    defaultProvider: "myCustom",
+  },
 });

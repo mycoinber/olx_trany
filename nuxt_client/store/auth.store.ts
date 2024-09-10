@@ -58,7 +58,6 @@ export const useAuthStore = defineStore("auth", {
           this.user = response.data.user;
           this.isAuthenticated = true;
           Cookies.set("token", response.data.token);
-          console.log("Registration successful");
           return response.data.success;
         } else {
           console.error("Ошибка регистрации:", response.data.message);
@@ -78,7 +77,6 @@ export const useAuthStore = defineStore("auth", {
           this.user = response.data.user;
           this.isAuthenticated = true;
           Cookies.set("token", response.data.token);
-          console.log("Login successful");
           return response.data.success;
         } else {
           console.error("Ошибка авторизации:", response.data.message);
@@ -94,7 +92,6 @@ export const useAuthStore = defineStore("auth", {
         });
 
         if (response.data.success) {
-          console.log("Email confirmed successfully!");
           // Дополнительные действия при успешном подтверждении email
         } else {
           console.error("Ошибка подтверждения email:", response.data.message);

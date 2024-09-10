@@ -23,6 +23,6 @@ export const MENU_BUTTONS_DATA: IMenuItem[] = [
   {
     icon: "",
     name: "Place an ad  +",
-    url: "/myaccount/offers/new",
+    url: "/myaccount/offers/add",
   },
 ];

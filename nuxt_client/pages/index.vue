@@ -1,31 +1,27 @@
 <template>
   <main>
-    <MainHero />
-    <MainRent />
-    <MainSale />
-    <MainCommercial />
+    <MainHero class="container" />
+    <MainRent class="container" />
+    <MainSale class="container" />
+    <MainCommercial class="container" />
     <MainAd />
-
+    <MainLocation />
     <MainBlog />
     <MainAbout />
   </main>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   import { useQuery } from "@tanstack/vue-query";
+  import { useNuxtApp, useRuntimeConfig } from "#app";
   import { onServerPrefetch } from "vue";
-  import instance from "../utils/axios";
-
-  const { data, isLoading, error, refetch, suspense } = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => {
-      const response = await instance.get("/user");
-      if (response.status !== 200) {
-        throw new Error("Network response was not ok");
-      }
-      return response.data;
-    },
-  });
-
-  onServerPrefetch(suspense);
+  const { $axios } = useNuxtApp();
 </script>
+
+<style scoped lang="scss">
+  .container {
+    width: 75.556rem;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+</style>
