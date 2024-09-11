@@ -2,10 +2,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 // Создаем экземпляр axios
+const config = useRuntimeConfig();
 
 const baseURL = process.server
   ? "http://olx_back:3001"
-  : "http://localhost:3001";
+  : config.public.backHost;
 
 const instance = axios.create({
   baseURL: baseURL, // Укажите ваш базовый URL здесь
