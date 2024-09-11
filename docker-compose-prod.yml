@@ -30,6 +30,8 @@ services:
     networks:
       - olx_net
     restart: always
+    environment:
+      BACK_HOST: "http://olx_back:${PORT}"
     volumes:
       - ./nuxt_client:/usr/src/app
     command: ["/bin/sh", "-c", "npm install && npm run dev -- --host 0.0.0.0"]
