@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  console.log("login loaded");
   useSeoMeta({
     title: "Login",
   });
@@ -9,7 +8,6 @@
   const authStore = useAuthStore();
   const router = useRouter();
 
-  console.log(authStore.getIsAuthenticated);
   const username = ref("");
   const password = ref("");
 

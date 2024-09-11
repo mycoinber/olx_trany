@@ -1,0 +1,57 @@
+# version: "3.3"
+
+services:
+  olx_back:
+    container_name: olx_back
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - olx_net
+    depends_on:
+      - olx_mongo
+    env_file:
+      - .env
+    restart: always
+    environment:
+      MONGODB_URI: "mongodb://${DB_UNAME}:${DB_PWD}@olx_mongo:27017/${DB_NAME}"
+    volumes:
+      - ./backend:/usr/src/app
+    command: ["npx", "nodemon", "app.js"]
+  nuxt_client:
+    container_name: nuxt_client
+    build:
+      context: ./nuxt_client
+      dockerfile: Dockerfile.client
+    ports:
+      - ${NUXT_PORT}:3000
+    networks:
+      - olx_net
+    restart: always
+    volumes:
+      - ./nuxt_client:/usr/src/app
+    command: ["/bin/sh", "-c", "npm install && npm run dev -- --host 0.0.0.0"]
+
+  olx_mongo:
+    image: mongo:latest
+    container_name: olx_mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_UNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PWD}
+
+    ports:
+      - 27098:27017
+    networks:
+      - olx_net
+    volumes:
+      - ./mongodb_data:/data/db
+
+volumes:
+  olxcoin:
+  mongodb_data:
+
+networks:
+  olx_net:
+    driver: bridge

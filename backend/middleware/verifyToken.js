@@ -23,7 +23,7 @@ async function verifyToken(req, res, next) {
       });
     });
 
-    console.log(decoded);
+    console.log("Verify token user data:", decoded);
     // Проверяем, не истек ли срок действия токена
     const currentTime = Math.floor(Date.now() / 1000); // Текущее время в секундах
     if (decoded.exp < currentTime) {

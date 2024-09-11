@@ -2,7 +2,7 @@ const CategoryField = require("../models/categoryFieldModels");
 
 // Создание нового поля категории
 const createCategoryField = async (req, res) => {
-  const { category, name, type, options } = req.body;
+  const { category, name, type, options, overview } = req.body;
 
   try {
     const newCategoryField = new CategoryField({
@@ -10,6 +10,7 @@ const createCategoryField = async (req, res) => {
       name,
       type,
       options,
+      overview,
     });
     const savedCategoryField = await newCategoryField.save();
     res.status(201).json(savedCategoryField);

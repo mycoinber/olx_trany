@@ -1,7 +1,6 @@
 <script lang="ts" setup>
   const router = useRouter();
 
-  console.log("registration loaded");
   useSeoMeta({
     title: "Registration",
   });
@@ -9,7 +8,6 @@
     layout: "auth",
   });
   const authStore = useAuthStore();
-  console.log(authStore.getIsAuthenticated);
 
   const usernameRef = ref("");
   const passwordRef = ref("");
@@ -44,45 +42,66 @@
 </script>
 
 <template>
-  <div class="auth auth-register">
-    <div class="auth__form">
-      <h1 class="auth__title">Register</h1>
+  <div class="container">
+    <div class="another-header">
+      <span class="another-header__button">Back</span>
+      <NuxtLink to="/" class="logo">
+        <NuxtImg src="/logo.svg" alt="logo" width="20px" height="20px" />
+      </NuxtLink>
+    </div>
+    <div class="auth auth-register">
+      <div class="auth__form">
+        <h1 class="auth__title">Register</h1>
 
-      <form action="" @submit.prevent="handleRegister">
-        <input
-          type="text"
-          v-model="usernameRef"
-          placeholder="Username"
-          required
-        />
-        <input
-          type="password"
-          v-model="passwordRef"
-          placeholder="Password"
-          required
-        />
-        <input
-          type="text"
-          v-model="firstNameRef"
-          placeholder="First Name"
-          required
-        />
-        <input
-          type="text"
-          v-model="lastNameRef"
-          placeholder="Last Name"
-          required
-        />
-        <input type="email" v-model="emailRef" placeholder=" Email" required />
-        <input type="tel" v-model="phoneRef" placeholder="Phone" required />
-        <button type="submit" class="button__group-send">Register</button>
-      </form>
+        <form action="" @submit.prevent="handleRegister">
+          <input
+            type="text"
+            v-model="usernameRef"
+            placeholder="Username"
+            required
+          />
+          <input
+            type="password"
+            v-model="passwordRef"
+            placeholder="Password"
+            required
+          />
+          <input
+            type="text"
+            v-model="firstNameRef"
+            placeholder="First Name"
+            required
+          />
+          <input
+            type="text"
+            v-model="lastNameRef"
+            placeholder="Last Name"
+            required
+          />
+          <input
+            type="email"
+            v-model="emailRef"
+            placeholder=" Email"
+            required
+          />
+          <input type="tel" v-model="phoneRef" placeholder="Phone" required />
+          <button type="submit" class="button__group-send">Register</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-.auth-register{
- 
-}
+<style lang="scss">
+  .another-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    padding: 2.222rem 0;
+    &-button {
+      color: black;
+
+      font-size: 1rem;
+    }
+  }
 </style>

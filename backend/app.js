@@ -3,7 +3,10 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
+const offerRoutes = require("./routes/offerRoutes");
 const ctegoryFieldRoutes = require("./routes/ctegoryFieldRoutes");
+const mediaRoutes = require("./routes/mediaRoutes");
+const cityRoutes = require("./routes/cityRoutes");
 const front = process.env.FRONT;
 const allowedOrigins = [front];
 const dbuser = process.env.DB_UNAME;
@@ -19,11 +22,7 @@ const port = process.env.PORT || 3000; //Указываем порт, если �
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
+app.use(bodyParser.json());
 
 app.use(
   cors({
@@ -63,6 +62,9 @@ app.use(express.json());
 app.use("/user", userRoutes);
 app.use("/category", categoryRoutes);
 app.use("/category-field", ctegoryFieldRoutes);
+app.use("/offer", offerRoutes);
+app.use("/media", bodyParser.urlencoded({ extended: true }), mediaRoutes);
+app.use("/cities", cityRoutes);
 
 //прослушка приложения
 app.listen(port, () => {

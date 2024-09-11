@@ -10,7 +10,7 @@
     } else if (
       item.url === "/user-menu" ||
       item.url === "/favorite" ||
-      item.url === "/add-offer"
+      item.url === "/myaccount/offers/add"
     ) {
       if (authStore.getIsAuthenticated) {
         router.push(item.url);
@@ -31,12 +31,14 @@
       <Icon :name="item.icon"
         ><span>{{ item.name }}</span></Icon
       >
-      <div
-        v-if="item.name === 'user' && authStore.getIsAuthenticated"
-        class="dropdown"
-      >
-        <p>Выпадающий блок</p>
-      </div>
+      <ClientOnly>
+        <div
+          v-if="item.name === 'user' && authStore.getIsAuthenticated"
+          class="dropdown"
+        >
+          <p>Выпадающий блок</p>
+        </div>
+      </ClientOnly>
     </NuxtLink>
   </nav>
 </template>
