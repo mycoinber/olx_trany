@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 
 const baseURL = process.server ? "http://olx_back:3001" : process.env.BACK_HOST;
 
+console.log("baseURL", baseURL);
+
 const instance = axios.create({
   baseURL: baseURL, // Укажите ваш базовый URL здесь
 });
