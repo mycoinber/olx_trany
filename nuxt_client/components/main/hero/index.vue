@@ -80,6 +80,10 @@
   onServerPrefetch(async () => {
     await suspense();
   });
+
+  onMounted(() => {
+    refetch();
+  });
 </script>
 
 <style lang="scss">
