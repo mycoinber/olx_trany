@@ -58,6 +58,9 @@ export default defineNuxtConfig({
     public: {
       backHost: process.env.BACK_HOST || "http://localhost:3001",
     },
+    server: {
+      backHost: process.env.BACK_HOST_SV || "http://localhost:3001",
+    },
   },
   plugins: ["~/plugins/vue-query.ts"],
   image: {

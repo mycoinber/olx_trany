@@ -3,7 +3,9 @@ import Cookies from "js-cookie";
 
 // Создаем экземпляр axios
 
-const baseURL = process.server ? "http://olx_back:3001" : process.env.BACK_HOST;
+const baseURL = process.server
+  ? process.env.BACK_HOST_SV
+  : process.env.BACK_HOST;
 
 console.log("baseURL", baseURL);
 
