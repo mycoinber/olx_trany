@@ -9,6 +9,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     ? "http://olx_back:3099" // Используйте контейнерный адрес или другой серверный URL
     : config.public.backHost || "http://localhost:3001"; // Клиентский URL
 
+  console.log(backurl);
   const instance = axios.create({
     baseURL: backurl,
   });
