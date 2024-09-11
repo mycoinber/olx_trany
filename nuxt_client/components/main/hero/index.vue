@@ -77,9 +77,9 @@
     suspense: true,
   });
 
-  onServerPrefetch(async () => {
-    await suspense();
-  });
+  // onServerPrefetch(async () => {
+  //   await suspense();
+  // });
 
   onMounted(() => {
     refetch();
