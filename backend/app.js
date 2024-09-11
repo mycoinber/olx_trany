@@ -72,3 +72,4 @@ app.listen(port, () => {
 }); //Конец приложения
 
 //mongodb://testolx:testolx123!@localhost:27018/olx?authSource=admin
+//mongodb://testolx:testolx123!@158.220.97.235:27098/olx?authSource=admin
