@@ -95,6 +95,11 @@
           font-size: 0.778rem;
           line-height: 0.933rem;
           color: #8a7d80;
+
+          @include media(mobile) {
+            font-size: 1rem;
+            line-height: 1.214rem;
+          }
         }
       }
 
@@ -113,6 +118,10 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+
+        @include media(mobile) {
+          font-size: 1.14rem;
+        }
       }
 
       &__price {
@@ -120,6 +129,11 @@
         font-weight: 700;
         line-height: 1.6rem;
         color: $color-02;
+
+        @include media(mobile) {
+          font-size: 1.14rem;
+          font-weight: 600;
+        }
       }
     }
   }
@@ -127,9 +141,18 @@
   .card--type1 {
     width: 40.5rem;
     height: 33rem;
+
+    @include media(mobile) {
+      width: 23.93rem;
+      height: 31.29rem;
+      max-width: 23.93rem;
+    }
     .card-image {
       width: 100%;
       height: 24.111rem;
+      @include media(mobile) {
+        height: 22.429rem;
+      }
 
       img {
         border-radius: 0.6rem 0.6rem 0 0;
@@ -140,11 +163,16 @@
       display: flex;
       justify-content: space-between;
       flex-direction: column;
+      height: 8.857rem;
       gap: 1.778rem;
       &__top {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        @include media(mobile) {
+          align-items: flex-start;
+        }
       }
       &__title {
         max-width: 70%;
@@ -249,6 +277,49 @@
 
       &__price {
         font-size: 1rem;
+      }
+    }
+  }
+
+  .card--type5 {
+    background-color: $color-01;
+    width: 40.5rem;
+    height: 33rem;
+
+    @include media(mobile) {
+      width: 23.93rem;
+      height: 31.29rem;
+      max-width: 23.93rem;
+    }
+    .card-image {
+      width: 100%;
+      height: 24.111rem;
+      @include media(mobile) {
+        height: 22.429rem;
+      }
+
+      img {
+        border-radius: 0.6rem 0.6rem 0 0;
+        height: 100%;
+      }
+    }
+    .card-details {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      height: 8.857rem;
+      gap: 1.778rem;
+      &__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        @include media(mobile) {
+          align-items: flex-start;
+        }
+      }
+      &__title {
+        max-width: 70%;
       }
     }
   }

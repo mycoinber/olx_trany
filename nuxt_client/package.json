@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxt/content": "^2.13.2",
     "@nuxt/image": "^1.5.0",
+    "@nuxtjs/device": "^3.2.2",
     "@pinia/nuxt": "^0.5.1",
     "@tanstack/vue-query": "^5.32.0",
     "axios": "^1.6.8",
@@ -19,6 +20,7 @@
     "js-cookie": "^3.0.5",
     "nuxt": "^3.11.2",
     "nuxt-sass-resources-loader": "^2.0.5",
+    "nuxt-swiper": "^1.2.2",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"

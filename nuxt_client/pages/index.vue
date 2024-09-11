@@ -2,7 +2,7 @@
   <main>
     <MainHero class="container" />
     <MainRent class="container" />
-    <MainSale class="container" />
+    <MainSale />
     <MainCommercial class="container" />
     <MainAd />
     <MainLocation />

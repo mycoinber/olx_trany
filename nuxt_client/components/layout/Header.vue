@@ -24,7 +24,10 @@
 <style lang="scss">
   .header {
     background: #ffffff;
-    box-shadow: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.1);
+
+    @include media(desktop) {
+      box-shadow: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.1);
+    }
 
     &__top {
       background: #141414;

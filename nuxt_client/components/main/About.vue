@@ -132,11 +132,19 @@
 
     &-top {
       margin-bottom: 6.667rem;
+      @include media(mobile) {
+        padding: 0 1.143rem;
+      }
     }
     &-bottom {
       display: flex;
       justify-content: space-between;
       gap: 6rem;
+
+      @include media(mobile) {
+        flex-direction: column-reverse;
+        gap: 0;
+      }
 
       &__title {
         align-items: center;
@@ -146,6 +154,9 @@
         text-align: center;
         margin-bottom: 1.778rem;
         line-height: 2.933rem;
+        @include media(mobile) {
+          font-size: 2.14rem;
+        }
       }
       &__desc {
         font-size: 1rem;
@@ -161,10 +172,19 @@
         padding: 3rem 0rem 2rem 8rem;
         max-width: 50%;
         width: 100%;
+        @include media(mobile) {
+          max-width: 100%;
+          padding: 7.357rem 1.143rem;
+        }
       }
       &__right {
         width: 50%;
         height: 41.333rem;
+
+        @include media(mobile) {
+          width: 100%;
+          height: 100%;
+        }
         img {
           width: 100%;
           height: 100%;
@@ -193,6 +213,9 @@
       text-align: center;
       margin-bottom: 1.778rem;
       line-height: 2.933rem;
+      @include media(mobile) {
+        font-size: 2.14rem;
+      }
     }
 
     &-desc {
@@ -208,13 +231,13 @@
 
     &-socaial {
       display: flex;
-      gap: 0.444rem;
+      gap: 0.857rem;
       align-items: center;
       justify-content: center;
 
       &__icon {
-        width: 0.944rem;
-        height: 0.944rem;
+        width: 1.714rem;
+        height: 1.714rem;
 
         img {
           width: 100%;
@@ -233,6 +256,9 @@
     padding: 1rem;
     border-radius: 1rem;
     background: #ffffff;
+    @include media(mobile) {
+      width: 24.5rem;
+    }
 
     input {
       padding: 0.75rem;

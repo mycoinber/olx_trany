@@ -1,8 +1,32 @@
 <template>
-  <section class="hero" v-if="rentData && rentData.length > 0">
+  <section class="commercial" v-if="rentData && rentData.length > 0">
     <div class="container">
       <h2 class="rent-title">Top Commercial</h2>
-      <div class="rent-wrapper">
+      <div class="rent-wrapper" v-if="isMobile">
+        <Swiper
+          :slidesPerView="'auto'"
+          :modules="modules"
+          :navigation="{
+            nextEl: '.com-right',
+            prevEl: '.com-left',
+          }"
+        >
+          <SwiperSlide v-for="(offer, index) in rentData" :key="index">
+            <OfferCard :type="'type1'" :offer="offer" />
+          </SwiperSlide>
+        </Swiper>
+        <div class="control">
+          <div class="control__button control__button-left com-left">
+            <Icon name="weui:arrow-outlined" />
+          </div>
+          <div class="control_pag">1-4</div>
+          <div class="control__button control__button-right com-right">
+            <Icon name="weui:arrow-outlined" />
+          </div>
+        </div>
+      </div>
+
+      <div class="rent-wrapper" v-if="!isMobile">
         <OfferCard
           v-for="(item, index) in rentData"
           :key="index"
@@ -18,6 +42,11 @@
 <script setup>
   import { useQuery } from "@tanstack/vue-query";
   const { $axios } = useNuxtApp();
+
+  import { Navigation } from "swiper/modules";
+
+  const modules = [Navigation];
+  const { isMobile } = useDevice();
 
   const fetchOfers = async ({ queryKey }) => {
     const [_key, { limit, category, propertyType }] = queryKey;
@@ -62,6 +91,11 @@
 <style lang="scss">
   .commercial {
     padding: 6.667rem 0;
+
+    @include media(mobile) {
+      padding: 2.143rem 0;
+    }
+
     &-title {
       text-align: center;
       margin-bottom: 2.222rem;
@@ -77,6 +111,10 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 2.222rem;
+      @include media(mobile) {
+        flex-direction: column;
+        gap: 1.714rem;
+      }
     }
 
     &-button {
@@ -118,6 +156,64 @@
         -ms-transform: translateX(0.2rem);
         -o-transform: translateX(0.2rem);
       }
+    }
+  }
+
+  @include media(mobile) {
+    .swiper-pagination-bullet {
+      background-color: #000;
+    }
+
+    .swiper {
+      width: 100%;
+      padding-left: 1.143rem;
+    }
+
+    .swiper-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 23.93rem;
+      margin-right: 0.571rem;
+    }
+
+    .control {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1.143rem;
+      width: 100%;
+
+      &__button {
+        width: 1.3rem;
+        height: 1.3rem;
+
+        svg {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+
+        &-left {
+          svg {
+            transform: rotate(180deg);
+          }
+        }
+      }
+    }
+
+    .custom-pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .custom-pagination .swiper-pagination-bullet {
+      background-color: #000;
+      width: 10px;
+      height: 10px;
+      margin: 0 5px;
     }
   }
 </style>

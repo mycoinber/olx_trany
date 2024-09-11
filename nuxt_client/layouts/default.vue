@@ -2,6 +2,7 @@
   import { onMounted } from "vue";
 
   const auth = useAuthStore();
+  const { isMobile } = useDevice();
 
   onMounted(async () => {
     await auth.initialize();
@@ -9,7 +10,8 @@
 </script>
 
 <template>
-  <LayoutHeader />
+  <LayoutHeader v-if="!isMobile" />
+  <LayoutMobileHeader v-if="isMobile" />
   <div>
     <slot />
   </div>

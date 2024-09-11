@@ -14,6 +14,13 @@ html {
   font-family: "Montserrat", sans-serif;
 }
 
+//BASE FONT_SIZE 14px
+@include media(mobile) {
+  html {
+    font-size: 3.733vw;
+  }
+}
+
 // @media (min-width: 1440px) {
 //   html {
 //     font-size: 18px; // Fix the font-size for screens wider than 1440px

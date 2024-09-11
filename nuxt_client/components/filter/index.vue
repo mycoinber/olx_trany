@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="filter" v-if="screenWidth > 541">
+    <div class="filter" v-if="isMobile">
       <h2 class="filter__title">Filters</h2>
 
       <div class="filter__setup">
@@ -50,32 +50,12 @@
   import { ref, computed, watch, onMounted } from "vue";
   import { useQuery } from "@tanstack/vue-query";
 
+  const { isMobile } = useDevice();
+
   const route = useRoute();
   const router = useRouter();
   const { $axios } = useNuxtApp();
   const tablet = ref("grid");
-
-  // Добавляем реактивное свойство для ширины экрана
-  const screenWidth = ref(542);
-
-  // Функция для обновления ширины экрана
-  const updateScreenWidth = () => {
-    screenWidth.value = window.innerWidth;
-  };
-
-  // Проверяем, выполняется ли код на клиенте, и только тогда добавляем слушатель
-  onMounted(() => {
-    if (process.client) {
-      screenWidth.value = window.innerWidth; // Инициализируем ширину экрана при монтировании
-      window.addEventListener("resize", updateScreenWidth);
-    }
-  });
-
-  onBeforeUnmount(() => {
-    if (process.client) {
-      window.removeEventListener("resize", updateScreenWidth);
-    }
-  });
 
   // Примерные категории и другие данные для фильтров
   const categories = ref(["Apartment", "House", "Condo"]);
@@ -274,6 +254,7 @@
 
   onServerPrefetch(async () => {
     await suspense();
+    console.log("isMobile", isMobile);
   });
 
   // Обновляем фильтры и данные при изменении других фильтров
@@ -499,6 +480,10 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr); // 3 колонки
         gap: 0.889rem;
+
+        @include media(mobile) {
+          grid-template-columns: repeat(1, 1fr);
+        }
       }
     }
   }
